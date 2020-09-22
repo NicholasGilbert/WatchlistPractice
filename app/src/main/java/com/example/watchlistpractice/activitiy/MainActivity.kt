@@ -1,25 +1,23 @@
-package com.example.watchlistpractice
+package com.example.watchlistpractice.activitiy
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.Gravity
-import android.view.LayoutInflater
-import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.PopupWindow
-import android.widget.RelativeLayout
-import android.widget.TextView
+import android.view.*
+import android.widget.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.room.Room
+import com.example.watchlistpractice.R
 import com.example.watchlistpractice.data.ApiData
+import com.example.watchlistpractice.data.RoomMovie
 import com.example.watchlistpractice.support.CardAdapter
 import com.example.watchlistpractice.support.RetrofitInterface
+import com.example.watchlistpractice.support.RoomMovieDatabase
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.movie_card_layout.*
-import kotlinx.android.synthetic.main.movie_popup_layout.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -37,12 +35,36 @@ class MainActivity : AppCompatActivity(), CardAdapter.OnMovieListener{
 
     lateinit var popup: PopupWindow
 
+    lateinit var db: RoomMovieDatabase
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_layout, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.movieSearchMenu -> {
+                Toast.makeText(applicationContext, "click on movie search", Toast.LENGTH_LONG).show()
+                true
+            }
+            R.id.myListMenu ->{
+                val intent = Intent(this@MainActivity, MyList::class.java)
+                startActivity(intent)
+                Toast.makeText(applicationContext, "click on my list" +
+                        "", Toast.LENGTH_LONG).show()
+                return true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        recyclerView = findViewById(R.id.recycler_view)
+        recyclerView = findViewById(R.id.main_recycler_view)
 
+        db = Room.databaseBuilder(applicationContext, RoomMovieDatabase::class.java, "data.db").allowMainThreadQueries().build()
 
         btnSearch.setOnClickListener {
             if (etSearch.text.toString() != "") {
@@ -95,5 +117,26 @@ class MainActivity : AppCompatActivity(), CardAdapter.OnMovieListener{
         mCtvReleased.text = mCtvReleased.text.toString() + movieHolder.release_date!!
         mCtvLanguage.text = mCtvLanguage.text.toString() + movieHolder.original_language!!
         mCtvDescription.text = mCtvDescription.text.toString() + "\n" + movieHolder.overview!!
+
+        addData(movieHolder)
+    }
+
+    fun addData(inMovie: ApiData.ResultsItem){
+        var checker = true
+
+        for(movie in db.DataDAO().getData()){
+            if (inMovie.id == movie.roomMovieId){
+                checker = false
+            }
+        }
+        if (checker == true) {
+            db.DataDAO().insert(RoomMovie(  inMovie.id!!,
+                                            inMovie.title!!,
+                                            inMovie.vote_average!!,
+                                            inMovie.release_date!!,
+                                            inMovie.original_language!!,
+                                            inMovie.overview!!)
+            )
+        }
     }
 }
