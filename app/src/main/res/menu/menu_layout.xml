@@ -3,6 +3,11 @@
     <item
         android:id="@+id/movieSearchMenu"
         android:title="Movie Search"/>
+
+    <item
+        android:id="@+id/discoverMovieMenu"
+        android:title="Discover Movies"/>
+
     <item
         android:id="@+id/myListMenu"
         android:title="My List"/>

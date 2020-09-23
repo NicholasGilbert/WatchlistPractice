@@ -23,13 +23,16 @@ interface RetrofitInterface {
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(okHttpClient)
-                .baseUrl("https://api.themoviedb.org/3/search/")
+                .baseUrl("https://api.themoviedb.org/3/")
                 .build()
 
             return retrofit.create(RetrofitInterface::class.java)
         }
     }
 
-    @GET("movie?api_key=21d29fc06b9df12fa42a5d15af0651c1")
+    @GET("search/movie?api_key=21d29fc06b9df12fa42a5d15af0651c1&sort_by=popularity.desc")
     fun findMovie(@Query("query") query: String): Call<ApiData.Response>
+
+    @GET("discover/movie?api_key=21d29fc06b9df12fa42a5d15af0651c1&sort_by=popularity.desc")
+    fun discoverMovie(@Query("with_genres") with_genres: Int?): Call<ApiData.Response>
 }

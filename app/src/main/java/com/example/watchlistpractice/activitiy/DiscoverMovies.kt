@@ -1,13 +1,15 @@
 package com.example.watchlistpractice.activitiy
 
 import android.content.Context
-import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.*
+import android.view.Gravity
+import android.view.LayoutInflater
+import android.view.ViewGroup
 import android.widget.*
+import androidx.core.view.get
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
@@ -17,13 +19,17 @@ import com.example.watchlistpractice.data.RoomMovie
 import com.example.watchlistpractice.support.CardAdapter
 import com.example.watchlistpractice.support.RetrofitInterface
 import com.example.watchlistpractice.support.RoomMovieDatabase
+import kotlinx.android.synthetic.main.activity_discover_movies.*
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.movie_popup_layout.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class MainActivity : AppCompatActivity(), CardAdapter.OnMovieListener{
+class DiscoverMovies : AppCompatActivity(), CardAdapter.OnMovieListener {
+    lateinit var dropdown: Spinner
+    lateinit var spinnerAdapter: ArrayAdapter<String>
+    val options: List<String> = listOf("Discover", "Action", "Adventure", "Animation", "Comedy")
+
     private val retrofitInterface by lazy{
         RetrofitInterface.create()
     }
@@ -38,56 +44,36 @@ class MainActivity : AppCompatActivity(), CardAdapter.OnMovieListener{
 
     lateinit var db: RoomMovieDatabase
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_layout, menu)
-        return super.onCreateOptionsMenu(menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.movieSearchMenu -> {
-                return true
-            }
-            R.id.myListMenu ->{
-                val intent = Intent(this@MainActivity, MyList::class.java)
-                startActivity(intent)
-                return true
-            }
-            R.id.discoverMovieMenu ->{
-                val intent = Intent(this@MainActivity, DiscoverMovies::class.java)
-                startActivity(intent)
-                return true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
-    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_discover_movies)
 
-        recyclerView = findViewById(R.id.main_recycler_view)
+        recyclerView = findViewById(R.id.discover_recycler_view)
 
         db = Room.databaseBuilder(applicationContext, RoomMovieDatabase::class.java, "data.db").allowMainThreadQueries().build()
 
-        btnSearch.setOnClickListener {
-            if (etSearch.text.toString() != "") {
-                val inSearch = etSearch.text.toString()
-                val call = retrofitInterface.findMovie(inSearch)
-                val res = call!!.enqueue(object : Callback<ApiData.Response> {
-                    override fun onFailure(call: Call<ApiData.Response>, t: Throwable) {
-                        t.printStackTrace()
-                    }
+        dropdown = findViewById(R.id.spinner)
+        spinnerAdapter = ArrayAdapter(this, R.layout.spinner_layout, options)
+        dropdown.adapter = spinnerAdapter
 
-                    override fun onResponse(
-                        call: Call<ApiData.Response>,
-                        response: Response<ApiData.Response>
-                    ) {
-                        movieList = response.body()!!.results!!
-                        refreshList()
-                    }
+        btnSearchCategory.setOnClickListener {
+            val genreId = getGenreId(dropdown.selectedItem.toString())
 
-                })
-            }
+            val call = retrofitInterface.discoverMovie(genreId)
+            val res = call!!.enqueue(object : Callback<ApiData.Response> {
+                override fun onFailure(call: Call<ApiData.Response>, t: Throwable) {
+                    t.printStackTrace()
+                }
+
+                override fun onResponse(
+                    call: Call<ApiData.Response>,
+                    response: Response<ApiData.Response>
+                ) {
+                    movieList = response.body()!!.results!!
+                    refreshList()
+                }
+
+            })
         }
     }
 
@@ -98,6 +84,27 @@ class MainActivity : AppCompatActivity(), CardAdapter.OnMovieListener{
         recyclerView.adapter = adapter
     }
 
+    fun getGenreId(inGenre: String): Int?{
+        if(inGenre == "Discover"){
+            return null
+        }
+        else if(inGenre =="Action"){
+            return 28
+        }
+        else if(inGenre =="Adventure"){
+            return 12
+        }
+        else if(inGenre =="Animation"){
+            return 16
+        }
+        else if(inGenre =="Comedy"){
+            return 35
+        }
+        else{
+            return null
+        }
+    }
+
     override fun onMovieClick(pos: Int) {
         val layoutInflater = this.applicationContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val customView = layoutInflater.inflate(R.layout.movie_popup_layout, null)
@@ -105,7 +112,7 @@ class MainActivity : AppCompatActivity(), CardAdapter.OnMovieListener{
         popup.isOutsideTouchable = true
         popup.isFocusable = true
         popup.setBackgroundDrawable(ColorDrawable(Color.LTGRAY))
-        popup.showAtLocation(rlMain, Gravity.CENTER, 0, 0)
+        popup.showAtLocation(rlDiscoverMovies, Gravity.CENTER, 0, 0)
 
         val movieHolder = movieList.get(pos)
 
@@ -137,12 +144,13 @@ class MainActivity : AppCompatActivity(), CardAdapter.OnMovieListener{
             }
         }
         if (checker == true) {
-            db.DataDAO().insert(RoomMovie(  inMovie.id!!,
-                                            inMovie.title!!,
-                                            inMovie.vote_average!!,
-                                            inMovie.release_date!!,
-                                            inMovie.original_language!!,
-                                            inMovie.overview!!)
+            db.DataDAO().insert(
+                RoomMovie(  inMovie.id!!,
+                inMovie.title!!,
+                inMovie.vote_average!!,
+                inMovie.release_date!!,
+                inMovie.original_language!!,
+                inMovie.overview!!)
             )
         }
     }
