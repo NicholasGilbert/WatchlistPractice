@@ -64,4 +64,16 @@
         android:padding="5dp"
         android:text="Description" />
 
+    <Button
+        android:id="@+id/btnAddToList"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/MCtvDescription"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="50dp"
+        android:text="Add to My List" />
+
 </RelativeLayout>

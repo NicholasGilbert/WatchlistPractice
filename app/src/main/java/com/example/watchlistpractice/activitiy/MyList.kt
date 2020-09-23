@@ -7,7 +7,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Gravity
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.PopupWindow
 import android.widget.TextView
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -56,6 +58,20 @@ class MyList : AppCompatActivity(), ListCardAdapter.OnMovieListener, ListCardAda
             recyclerView.layoutManager = layoutManager
             recyclerView.adapter = adapter
         }
+
+        btnClearList.setOnClickListener {
+            movieList = db.DataDAO().getData() as ArrayList<RoomMovie>
+
+            adapter = ListCardAdapter(ArrayList(), this, this)
+            layoutManager = LinearLayoutManager(this)
+            recyclerView.layoutManager = layoutManager
+            recyclerView.adapter = adapter
+//            recyclerView.removeAllViewsInLayout()
+
+            for (movie in movieList){
+                db.DataDAO().delete(movie.roomMovieId)
+            }
+        }
     }
 
     override fun onMovieClick(pos: Int) {
@@ -74,6 +90,9 @@ class MyList : AppCompatActivity(), ListCardAdapter.OnMovieListener, ListCardAda
         val mCtvReleased = customView.findViewById(R.id.MCtvReleased) as TextView
         val mCtvLanguage = customView.findViewById(R.id.MCtvLanguage) as TextView
         val mCtvDescription = customView.findViewById(R.id.MCtvDescription) as TextView
+        val btnAddMovieToList = customView.findViewById(R.id.btnAddToList) as Button
+
+        btnAddMovieToList.visibility = View.INVISIBLE
 
         mCtvTitle.text = movieHolder.title!!
         mCtvRating.text = mCtvRating.text.toString() + movieHolder.rating!!

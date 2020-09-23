@@ -18,6 +18,7 @@ import com.example.watchlistpractice.support.CardAdapter
 import com.example.watchlistpractice.support.RetrofitInterface
 import com.example.watchlistpractice.support.RoomMovieDatabase
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.movie_popup_layout.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -111,6 +112,7 @@ class MainActivity : AppCompatActivity(), CardAdapter.OnMovieListener{
         val mCtvReleased = customView.findViewById(R.id.MCtvReleased) as TextView
         val mCtvLanguage = customView.findViewById(R.id.MCtvLanguage) as TextView
         val mCtvDescription = customView.findViewById(R.id.MCtvDescription) as TextView
+        val btnAddMovieToList = customView.findViewById(R.id.btnAddToList) as Button
 //
         mCtvTitle.text = movieHolder.title!!
         mCtvRating.text = mCtvRating.text.toString() + movieHolder.vote_average!!
@@ -118,7 +120,10 @@ class MainActivity : AppCompatActivity(), CardAdapter.OnMovieListener{
         mCtvLanguage.text = mCtvLanguage.text.toString() + movieHolder.original_language!!
         mCtvDescription.text = mCtvDescription.text.toString() + "\n" + movieHolder.overview!!
 
-        addData(movieHolder)
+        btnAddMovieToList.setOnClickListener{
+            popup.dismiss()
+            addData(movieHolder)
+        }
     }
 
     fun addData(inMovie: ApiData.ResultsItem){
