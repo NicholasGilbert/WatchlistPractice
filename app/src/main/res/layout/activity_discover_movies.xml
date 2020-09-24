@@ -4,11 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/rlDiscoverMovies"
-    tools:context=".activitiy.DiscoverMovies">
+    android:id="@+id/relative_layout_activity_discover_movies"
+    tools:context=".activitiy.DiscoverMoviesActivity">
 
     <Spinner
-        android:id="@+id/spinner"
+        android:id="@+id/spinner_genre"
         android:layout_width="290dp"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
@@ -16,12 +16,12 @@
         android:layout_marginStart="0dp"
         android:layout_marginTop="0dp"
         android:layout_marginEnd="0dp"
-        android:layout_toStartOf="@+id/btnSearchCategory"
+        android:layout_toStartOf="@+id/button_search_genre"
         android:background="@android:drawable/btn_dropdown"
         android:spinnerMode="dropdown" />
 
     <Button
-        android:id="@+id/btnSearchCategory"
+        android:id="@+id/button_search_genre"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -31,10 +31,10 @@
         android:text="Search" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/discover_recycler_view"
+        android:id="@+id/recycler_view_discover_movie"
         android:layout_width="match_parent"
         android:layout_height="630dp"
-        android:layout_below="@+id/spinner"
+        android:layout_below="@+id/spinner_genre"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"

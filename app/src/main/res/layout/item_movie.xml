@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -7,7 +6,7 @@
     card_view:cardCornerRadius="6dp"
     card_view:cardElevation="3dp"
     card_view:cardUseCompatPadding="true"
-    android:id="@+id/cvMovie">
+    android:id="@+id/card_view_movie_card">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -17,20 +16,18 @@
         android:padding="5dp">
 
         <TextView
-            android:id="@+id/tvTitle"
+            android:id="@+id/text_view_card_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
         <TextView
-            android:id="@+id/tvRating"
+            android:id="@+id/text_view_card_rating"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
         <TextView
-            android:id="@+id/tvRelease"
+            android:id="@+id/text_view_card_release"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
-
     </LinearLayout>
-
 </androidx.cardview.widget.CardView>

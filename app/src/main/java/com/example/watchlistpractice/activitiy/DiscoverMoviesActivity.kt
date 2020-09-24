@@ -10,6 +10,8 @@ import android.view.*
 import android.widget.Button
 import android.widget.TextView
 import android.widget.PopupWindow
+import android.widget.ArrayAdapter
+import android.widget.Spinner
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
@@ -19,12 +21,17 @@ import com.example.watchlistpractice.data.RoomMovie
 import com.example.watchlistpractice.support.CardAdapter
 import com.example.watchlistpractice.support.RetrofitInterface
 import com.example.watchlistpractice.support.RoomMovieDatabase
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_discover_movies.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class MainActivity : AppCompatActivity(), CardAdapter.OnMovieListener{
+class DiscoverMoviesActivity : AppCompatActivity(), CardAdapter.OnMovieListener {
+    //  Variables for spinner
+    lateinit var mDropdown      : Spinner
+    lateinit var mSpinnerAdapter: ArrayAdapter<String>
+             val OPTIONS        : List<String> = listOf("Discover", "Action", "Adventure", "Animation", "Comedy")
+
     //Variable for Retrofit
     private val RETROFIT_INTERFACE by lazy{
         RetrofitInterface.create()
@@ -54,14 +61,14 @@ class MainActivity : AppCompatActivity(), CardAdapter.OnMovieListener{
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.item_search -> {
+                val sIntent = Intent(this@DiscoverMoviesActivity, MainActivity::class.java)
+                startActivity(sIntent)
                 return true
             } R.id.item_my_list ->{
-                val sIntent = Intent(this@MainActivity, MyListActivity::class.java)
+                val sIntent = Intent(this@DiscoverMoviesActivity, MyListActivity::class.java)
                 startActivity(sIntent)
                 return true
             } R.id.item_discover ->{
-                val sIntent = Intent(this@MainActivity, DiscoverMoviesActivity::class.java)
-                startActivity(sIntent)
                 return true
             }
             else -> super.onOptionsItemSelected(item)
@@ -70,48 +77,50 @@ class MainActivity : AppCompatActivity(), CardAdapter.OnMovieListener{
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_discover_movies)
 
-        mRecyclerView   = findViewById(R.id.recycler_view_main)
+        mRecyclerView       = findViewById(R.id.recycler_view_discover_movie)
 
-        mDatabase       = Room.databaseBuilder(applicationContext, RoomMovieDatabase::class.java, "data.db").allowMainThreadQueries().build()
+        mDatabase           = Room.databaseBuilder(applicationContext, RoomMovieDatabase::class.java, "data.db").allowMainThreadQueries().build()
 
-        button_search.setOnClickListener {
-            if (edit_text_search.text.toString() != "") {
-                val sInSearch   : String                    = edit_text_search.text.toString()
-                val sCall       : Call<ApiData.Response>    = RETROFIT_INTERFACE.findMovie(sInSearch)
-                val sRes = sCall!!.enqueue(object : Callback<ApiData.Response> {
-                    override fun onFailure(call: Call<ApiData.Response>, t: Throwable) {
-                        t.printStackTrace()
-                    }
+        mDropdown           = findViewById(R.id.spinner_genre)
+        mSpinnerAdapter     = ArrayAdapter(this, R.layout.item_genre, OPTIONS)
+        mDropdown.adapter   = mSpinnerAdapter
 
-                    override fun onResponse(call: Call<ApiData.Response>, response: Response<ApiData.Response>) {
-                        mMovieList = response.body()!!.results!!
-                        refreshList()
-                    }
+        button_search_genre.setOnClickListener {
+            val sGenreId    :Int?                    = getGenreId(mDropdown.selectedItem.toString())
 
-                })
-            }
+            val sCall       : Call<ApiData.Response> = RETROFIT_INTERFACE.discoverMovie(sGenreId)
+            val sRes        : Unit                   = sCall!!.enqueue(object : Callback<ApiData.Response> {
+                override fun onFailure(call: Call<ApiData.Response>, t: Throwable) {
+                    t.printStackTrace()
+                }
+
+                override fun onResponse(call: Call<ApiData.Response>, response: Response<ApiData.Response>) {
+                    mMovieList = response.body()!!.results!!
+                    refreshList()
+                }
+            })
         }
     }
 
     //Function when card is clicked
     override fun onMovieClick(pos: Int) {
-        val sCustomView     : View              = layoutInflater.inflate(R.layout.popup_movie, null)
+        val sCustomView     : View           = layoutInflater.inflate(R.layout.popup_movie, null)
         mPopup = PopupWindow(sCustomView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
         mPopup.isOutsideTouchable = true
         mPopup.isFocusable = true
         mPopup.setBackgroundDrawable(ColorDrawable(Color.LTGRAY))
-        mPopup.showAtLocation(relative_layout_activity_main, Gravity.CENTER, 0, 0)
+        mPopup.showAtLocation(relative_layout_activity_discover_movies, Gravity.CENTER, 0, 0)
 
-        val sMovieHolder                : ApiData.ResultsItem   = mMovieList.get(pos)
+        val sMovieHolder                : ApiData.ResultsItem = mMovieList.get(pos)
 
-        val sPopupTextViewTitle         : TextView  = sCustomView.findViewById(R.id.text_view_title) as TextView
-        val sPopupTextViewRating        : TextView  = sCustomView.findViewById(R.id.text_view_rating) as TextView
-        val sPopupTextViewReleased      : TextView  = sCustomView.findViewById(R.id.text_view_released) as TextView
-        val sPopupTextViewLanguage      : TextView  = sCustomView.findViewById(R.id.text_view_language) as TextView
-        val sPopupTextViewDescription   : TextView  = sCustomView.findViewById(R.id.text_view_description) as TextView
-        val sButtonAddMovie             : Button    = sCustomView.findViewById(R.id.button_add) as Button
+        val sPopupTextViewTitle         : TextView  = sCustomView.findViewById(R.id.text_view_title)        as TextView
+        val sPopupTextViewRating        : TextView  = sCustomView.findViewById(R.id.text_view_rating)       as TextView
+        val sPopupTextViewReleased      : TextView  = sCustomView.findViewById(R.id.text_view_released)     as TextView
+        val sPopupTextViewLanguage      : TextView  = sCustomView.findViewById(R.id.text_view_language)     as TextView
+        val sPopupTextViewDescription   : TextView  = sCustomView.findViewById(R.id.text_view_description)  as TextView
+        val sButtonAddMovie             : Button    = sCustomView.findViewById(R.id.button_add)             as Button
 
         sPopupTextViewTitle.text        = sMovieHolder.title!!
         sPopupTextViewRating.text       = sPopupTextViewRating.text.toString() + sMovieHolder.vote_average!!
@@ -133,6 +142,16 @@ class MainActivity : AppCompatActivity(), CardAdapter.OnMovieListener{
         mRecyclerView.adapter       = mAdapter
     }
 
+    //Function to get genre id
+    fun getGenreId(inGenre: String): Int?{
+        if      (inGenre == "Discover")     return null
+        else if (inGenre == "Action")       return 28
+        else if (inGenre == "Adventure")    return 12
+        else if (inGenre == "Animation")    return 16
+        else if (inGenre == "Comedy")       return 35
+        else                                return null
+    }
+
     //Function to add data to local database
     fun addData(inMovie: ApiData.ResultsItem){
         var mChecker = true
@@ -140,6 +159,7 @@ class MainActivity : AppCompatActivity(), CardAdapter.OnMovieListener{
         for(movie in mDatabase.DataDAO().getData()){
             if (inMovie.id == movie.roomMovieId) mChecker = false
         }
+
         if (mChecker == true) mDatabase.DataDAO()
                                        .insert(RoomMovie(inMovie.id!!,
                                                          inMovie.title!!,

@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/movieSearchMenu"
+        android:id="@+id/item_search"
         android:title="Movie Search"/>
 
     <item
-        android:id="@+id/discoverMovieMenu"
+        android:id="@+id/item_discover"
         android:title="Discover Movies"/>
 
     <item
-        android:id="@+id/myListMenu"
+        android:id="@+id/item_my_list"
         android:title="My List"/>
 </menu>
