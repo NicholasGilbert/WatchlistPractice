@@ -22,6 +22,9 @@ import com.example.watchlistpractice.support.CardAdapter
 import com.example.watchlistpractice.support.RetrofitInterface
 import com.example.watchlistpractice.support.RoomMovieDatabase
 import kotlinx.android.synthetic.main.activity_discover_movies.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -81,7 +84,7 @@ class DiscoverMoviesActivity : AppCompatActivity(), CardAdapter.OnMovieListener 
 
         mRecyclerView       = findViewById(R.id.recycler_view_discover_movie)
 
-        mDatabase           = Room.databaseBuilder(applicationContext, RoomMovieDatabase::class.java, "data.db").allowMainThreadQueries().build()
+        mDatabase           = Room.databaseBuilder(applicationContext, RoomMovieDatabase::class.java, "data.db").build()
 
         mDropdown           = findViewById(R.id.spinner_genre)
         mSpinnerAdapter     = ArrayAdapter(this, R.layout.item_genre, OPTIONS)
@@ -130,7 +133,10 @@ class DiscoverMoviesActivity : AppCompatActivity(), CardAdapter.OnMovieListener 
 
         sButtonAddMovie.setOnClickListener{
             mPopup.dismiss()
-            addData(sMovieHolder)
+
+            CoroutineScope(Dispatchers.IO).launch {
+                addData(sMovieHolder)
+            }
         }
     }
 
@@ -153,7 +159,7 @@ class DiscoverMoviesActivity : AppCompatActivity(), CardAdapter.OnMovieListener 
     }
 
     //Function to add data to local database
-    fun addData(inMovie: ApiData.ResultsItem){
+    suspend fun addData(inMovie: ApiData.ResultsItem){
         var mChecker = true
 
         for(movie in mDatabase.DataDAO().getData()){

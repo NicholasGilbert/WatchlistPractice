@@ -20,6 +20,9 @@ import com.example.watchlistpractice.support.CardAdapter
 import com.example.watchlistpractice.support.RetrofitInterface
 import com.example.watchlistpractice.support.RoomMovieDatabase
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -74,7 +77,7 @@ class MainActivity : AppCompatActivity(), CardAdapter.OnMovieListener{
 
         mRecyclerView   = findViewById(R.id.recycler_view_main)
 
-        mDatabase       = Room.databaseBuilder(applicationContext, RoomMovieDatabase::class.java, "data.db").allowMainThreadQueries().build()
+        mDatabase       = Room.databaseBuilder(applicationContext, RoomMovieDatabase::class.java, "data.db").build()
 
         button_search.setOnClickListener {
             if (edit_text_search.text.toString() != "") {
@@ -121,7 +124,10 @@ class MainActivity : AppCompatActivity(), CardAdapter.OnMovieListener{
 
         sButtonAddMovie.setOnClickListener{
             mPopup.dismiss()
-            addData(sMovieHolder)
+
+            CoroutineScope(IO).launch {
+                addData(sMovieHolder)
+            }
         }
     }
 
@@ -134,7 +140,7 @@ class MainActivity : AppCompatActivity(), CardAdapter.OnMovieListener{
     }
 
     //Function to add data to local database
-    fun addData(inMovie: ApiData.ResultsItem){
+    suspend fun addData(inMovie: ApiData.ResultsItem){
         var mChecker = true
 
         for(movie in mDatabase.DataDAO().getData()){
