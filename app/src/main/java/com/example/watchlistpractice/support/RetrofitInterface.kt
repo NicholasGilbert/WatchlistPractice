@@ -13,19 +13,19 @@ import retrofit2.http.Query
 interface RetrofitInterface {
     companion object{
         fun create(): RetrofitInterface{
-            val sLogging    = HttpLoggingInterceptor()
-            sLogging.level  = HttpLoggingInterceptor.Level.BODY
-            val sOkHttpClient = OkHttpClient.Builder()
-                                                         .addInterceptor(sLogging)
+            val logging = HttpLoggingInterceptor()
+            logging.level = HttpLoggingInterceptor.Level.BODY
+            val okHttpClient = OkHttpClient.Builder()
+                                                         .addInterceptor(logging)
                                                          .build()
-            val sRetrofit   :Retrofit = Retrofit.Builder()
+            val retrofit   :Retrofit = Retrofit.Builder()
                                                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                                                 .addConverterFactory(GsonConverterFactory.create())
-                                                .client(sOkHttpClient)
+                                                .client(okHttpClient)
                                                 .baseUrl("https://api.themoviedb.org/3/")
                                                 .build()
 
-            return sRetrofit.create(RetrofitInterface::class.java)
+            return retrofit.create(RetrofitInterface::class.java)
         }
     }
 
