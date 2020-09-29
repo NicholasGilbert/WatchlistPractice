@@ -92,6 +92,8 @@ class DiscoverMoviesActivity : AppCompatActivity(), ListCardAdapter.OnMovieListe
         dropdown.adapter = spinnerAdapter
 
         button_search_genre.setOnClickListener {
+            movieList = ArrayList()
+
             val sGenreId: Int? = getGenreId(dropdown.selectedItem.toString())
 
             val sCall: Call<ApiData.Response> = RETROFIT_INTERFACE.discoverMovie(sGenreId)

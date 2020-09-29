@@ -16,6 +16,7 @@ import androidx.room.Room
 import com.example.watchlistpractice.R
 import com.example.watchlistpractice.data.ApiData
 import com.example.watchlistpractice.data.RoomMovie
+import com.example.watchlistpractice.fragment.MovieDetailFragment
 import com.example.watchlistpractice.support.ListCardAdapter
 import com.example.watchlistpractice.support.RetrofitInterface
 import com.example.watchlistpractice.support.RoomMovieDatabase
@@ -30,7 +31,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class MainActivity : AppCompatActivity(), ListCardAdapter.OnMovieListener, ListCardAdapter.DeleteHelper {
+class MainActivity : AppCompatActivity(), ListCardAdapter.OnMovieListener, ListCardAdapter.DeleteHelper, MovieDetailFragment.OnButtonListener {
     //Variable for Retrofit
     private val RETROFIT_INTERFACE by lazy{
         RetrofitInterface.create()
@@ -83,6 +84,7 @@ class MainActivity : AppCompatActivity(), ListCardAdapter.OnMovieListener, ListC
         database = Room.databaseBuilder(applicationContext, RoomMovieDatabase::class.java, "data.db").build()
 
         button_search.setOnClickListener {
+            movieList = ArrayList()
             if (edit_text_search.text.toString() != "") {
                 val sInSearch: String = edit_text_search.text.toString()
                 val sCall: Call<ApiData.Response> = RETROFIT_INTERFACE.findMovie(sInSearch)
@@ -110,32 +112,41 @@ class MainActivity : AppCompatActivity(), ListCardAdapter.OnMovieListener, ListC
 
     //Function when card is clicked
     override fun onMovieClick(movie: RoomMovie) {
-        val customView: View = layoutInflater.inflate(R.layout.popup_movie, null)
-        popup = PopupWindow(customView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-        popup.isOutsideTouchable = true
-        popup.isFocusable = true
-        popup.setBackgroundDrawable(ColorDrawable(Color.LTGRAY))
-        popup.showAtLocation(relative_layout_activity_main, Gravity.CENTER, 0, 0)
+        MovieDetailFragment(movie, this).apply {
+            show(supportFragmentManager, tag)
+        }
+//        val customView: View = layoutInflater.inflate(R.layout.popup_movie, null)
+//        popup = PopupWindow(customView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+//        popup.isOutsideTouchable = true
+//        popup.isFocusable = true
+//        popup.setBackgroundDrawable(ColorDrawable(Color.LTGRAY))
+//        popup.showAtLocation(relative_layout_activity_main, Gravity.CENTER, 0, 0)
+//
+//        val popupTextViewTitle: TextView = customView.findViewById(R.id.text_view_title) as TextView
+//        val popupTextViewRating: TextView = customView.findViewById(R.id.text_view_rating) as TextView
+//        val popupTextViewReleased: TextView = customView.findViewById(R.id.text_view_released) as TextView
+//        val popupTextViewLanguage: TextView = customView.findViewById(R.id.text_view_language) as TextView
+//        val popupTextViewDescription: TextView = customView.findViewById(R.id.text_view_description) as TextView
+//        val buttonAddMovie: Button = customView.findViewById(R.id.button_add) as Button
+//
+//        popupTextViewTitle.text = movie.title
+//        popupTextViewRating.text = popupTextViewRating.text.toString() + movie.rating!!
+//        popupTextViewReleased.text = popupTextViewReleased.text.toString() + movie.release!!
+//        popupTextViewLanguage.text = popupTextViewLanguage.text.toString() + movie.language!!
+//        popuppTextViewDescription.text = popuppTextViewDescription.text.toString() + "\n" + movie.description!!
+//
+//        buttonAddMovie.setOnClickListener{
+//            popup.dismiss()
+//
+//            CoroutineScope(Dispatchers.IO).launch {
+//                addData(movie)
+//            }
+//        }
+    }
 
-        val popupTextViewTitle: TextView = customView.findViewById(R.id.text_view_title) as TextView
-        val popupTextViewRating: TextView = customView.findViewById(R.id.text_view_rating) as TextView
-        val popupTextViewReleased: TextView = customView.findViewById(R.id.text_view_released) as TextView
-        val popupTextViewLanguage: TextView = customView.findViewById(R.id.text_view_language) as TextView
-        val popuppTextViewDescription: TextView = customView.findViewById(R.id.text_view_description) as TextView
-        val buttonAddMovie: Button = customView.findViewById(R.id.button_add) as Button
-
-        popupTextViewTitle.text = movie.title
-        popupTextViewRating.text = popupTextViewRating.text.toString() + movie.rating!!
-        popupTextViewReleased.text = popupTextViewReleased.text.toString() + movie.release!!
-        popupTextViewLanguage.text = popupTextViewLanguage.text.toString() + movie.language!!
-        popuppTextViewDescription.text = popuppTextViewDescription.text.toString() + "\n" + movie.description!!
-
-        buttonAddMovie.setOnClickListener{
-            popup.dismiss()
-
-            CoroutineScope(Dispatchers.IO).launch {
-                addData(movie)
-            }
+    override fun onButtonClick(movie: RoomMovie) {
+        CoroutineScope(Dispatchers.IO).launch {
+            addData(movie)
         }
     }
 
