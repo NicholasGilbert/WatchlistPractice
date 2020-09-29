@@ -130,14 +130,14 @@ class DiscoverMoviesActivity : AppCompatActivity(), ListCardAdapter.OnMovieListe
         val popupTextViewRating: TextView = customView.findViewById(R.id.text_view_rating) as TextView
         val popupTextViewReleased: TextView = customView.findViewById(R.id.text_view_released) as TextView
         val popupTextViewLanguage: TextView = customView.findViewById(R.id.text_view_language) as TextView
-        val popuppTextViewDescription: TextView = customView.findViewById(R.id.text_view_description) as TextView
+        val popupTextViewDescription: TextView = customView.findViewById(R.id.text_view_description) as TextView
         val buttonAddMovie: Button = customView.findViewById(R.id.button_add) as Button
 
         popupTextViewTitle.text = movie.title
         popupTextViewRating.text = popupTextViewRating.text.toString() + movie.rating!!
         popupTextViewReleased.text = popupTextViewReleased.text.toString() + movie.release!!
         popupTextViewLanguage.text = popupTextViewLanguage.text.toString() + movie.language!!
-        popuppTextViewDescription.text = popuppTextViewDescription.text.toString() + "\n" + movie.description!!
+        popupTextViewDescription.text = popupTextViewDescription.text.toString() + "\n" + movie.description!!
 
         buttonAddMovie.setOnClickListener{
             popup.dismiss()
