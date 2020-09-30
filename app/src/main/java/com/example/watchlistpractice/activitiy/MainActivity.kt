@@ -10,6 +10,7 @@ import android.view.*
 import android.widget.Button
 import android.widget.TextView
 import android.widget.PopupWindow
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
@@ -20,13 +21,16 @@ import com.example.watchlistpractice.fragment.MovieDetailFragment
 import com.example.watchlistpractice.support.ListCardAdapter
 import com.example.watchlistpractice.support.RetrofitInterface
 import com.example.watchlistpractice.support.RoomMovieDatabase
+import com.example.watchlistpractice.support.SwipeToDelete
 import kotlinx.android.synthetic.main.activity_main.relative_layout_activity_main
 import kotlinx.android.synthetic.main.activity_main.edit_text_search
 import kotlinx.android.synthetic.main.activity_main.button_search
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -84,28 +88,35 @@ class MainActivity : AppCompatActivity(), ListCardAdapter.OnMovieListener, ListC
         database = Room.databaseBuilder(applicationContext, RoomMovieDatabase::class.java, "data.db").build()
 
         button_search.setOnClickListener {
-            movieList = ArrayList()
+//            movieList = ArrayList()
+//            if (edit_text_search.text.toString() != "") {
+//                val sInSearch: String = edit_text_search.text.toString()
+//                val sCall: Call<ApiData.Response> = RETROFIT_INTERFACE.findMovie(sInSearch)
+//                val sRes = sCall!!.enqueue(object: Callback<ApiData.Response> {
+//                    override fun onFailure(call: Call<ApiData.Response>, t: Throwable) {
+//                        t.printStackTrace()
+//                    }
+//
+//                    override fun onResponse(call: Call<ApiData.Response>, response: Response<ApiData.Response>) {
+//                        for (movies in response.body()!!.results!!){
+//                            movieList.add(RoomMovie(    movies.id!!,
+//                                                        movies.title!!,
+//                                                        movies.vote_average!!,
+//                                                        movies.release_date!!,
+//                                                        movies.original_language!!,
+//                                                        movies.overview!!))
+//                        }
+//                        refreshList()
+//                    }
+//
+//                })
+//            }
+
             if (edit_text_search.text.toString() != "") {
-                val sInSearch: String = edit_text_search.text.toString()
-                val sCall: Call<ApiData.Response> = RETROFIT_INTERFACE.findMovie(sInSearch)
-                val sRes = sCall!!.enqueue(object: Callback<ApiData.Response> {
-                    override fun onFailure(call: Call<ApiData.Response>, t: Throwable) {
-                        t.printStackTrace()
-                    }
-
-                    override fun onResponse(call: Call<ApiData.Response>, response: Response<ApiData.Response>) {
-                        for (movies in response.body()!!.results!!){
-                            movieList.add(RoomMovie(    movies.id!!,
-                                                        movies.title!!,
-                                                        movies.vote_average!!,
-                                                        movies.release_date!!,
-                                                        movies.original_language!!,
-                                                        movies.overview!!))
-                        }
-                        refreshList()
-                    }
-
-                })
+                val inSearch: String = edit_text_search.text.toString()
+                CoroutineScope(IO).launch {
+                    getData(inSearch)
+                }
             }
         }
     }
@@ -133,7 +144,7 @@ class MainActivity : AppCompatActivity(), ListCardAdapter.OnMovieListener, ListC
 //        popupTextViewRating.text = popupTextViewRating.text.toString() + movie.rating!!
 //        popupTextViewReleased.text = popupTextViewReleased.text.toString() + movie.release!!
 //        popupTextViewLanguage.text = popupTextViewLanguage.text.toString() + movie.language!!
-//        popuppTextViewDescription.text = popuppTextViewDescription.text.toString() + "\n" + movie.description!!
+//        popupTextViewDescription.text = popupTextViewDescription.text.toString() + "\n" + movie.description!!
 //
 //        buttonAddMovie.setOnClickListener{
 //            popup.dismiss()
@@ -144,29 +155,59 @@ class MainActivity : AppCompatActivity(), ListCardAdapter.OnMovieListener, ListC
 //        }
     }
 
+    fun getData(inString: String){
+        movieList = ArrayList()
+        val sCall: Call<ApiData.Response> = RETROFIT_INTERFACE.findMovie(inString)
+        val sRes = sCall!!.enqueue(object: Callback<ApiData.Response> {
+            override fun onFailure(call: Call<ApiData.Response>, t: Throwable) {
+                t.printStackTrace()
+            }
+
+            override fun onResponse(call: Call<ApiData.Response>, response: Response<ApiData.Response>) {
+                for (movies in response.body()!!.results!!){
+                    movieList.add(RoomMovie(movies.id!!,
+                                            movies.title!!,
+                                            movies.vote_average!!,
+                                            movies.release_date!!,
+                                            movies.original_language!!,
+                                            movies.overview!!))
+                }
+                setList(movieList)
+            }
+        })
+    }
+
     override fun onButtonClick(movie: RoomMovie) {
-        CoroutineScope(Dispatchers.IO).launch {
+        CoroutineScope(IO).launch {
             addData(movie)
         }
     }
 
     //Function to update the recycler view
-    fun refreshList(){
-        adapter = ListCardAdapter(movieList, this, this)
-
-        layoutManager = LinearLayoutManager(this)
-        recyclerView.layoutManager =  layoutManager
-        recyclerView.adapter = adapter
-    }
+//    fun refreshList(){
+//        adapter = ListCardAdapter(movieList, this, this)
+//
+//        layoutManager = LinearLayoutManager(this)
+//        recyclerView.layoutManager =  layoutManager
+//        recyclerView.adapter = adapter
+//    }
 
     //Function to add data to local database
-    suspend fun addData(inMovie: RoomMovie){
+    fun addData(inMovie: RoomMovie){
         var mChecker = true
 
         for(movie in database.DataDAO().getData()){
             if (inMovie.roomMovieId == movie.roomMovieId) mChecker = false
         }
         if (mChecker == true) database.DataDAO().insert(inMovie)
+    }
+
+    fun setList(inList: ArrayList<RoomMovie>){
+        adapter = ListCardAdapter(inList, this, this)
+
+        layoutManager = LinearLayoutManager(this)
+        recyclerView.layoutManager =  layoutManager
+        recyclerView.adapter = adapter
     }
 
     override fun onSwipe(task: RoomMovie) {
