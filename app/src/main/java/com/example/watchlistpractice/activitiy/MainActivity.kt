@@ -114,9 +114,9 @@ class MainActivity : AppCompatActivity(), ListCardAdapter.OnMovieListener, ListC
 
             if (edit_text_search.text.toString() != "") {
                 val inSearch: String = edit_text_search.text.toString()
-                CoroutineScope(IO).launch {
+//                CoroutineScope(IO).launch {
                     getData(inSearch)
-                }
+//                }
             }
         }
     }
@@ -178,9 +178,9 @@ class MainActivity : AppCompatActivity(), ListCardAdapter.OnMovieListener, ListC
     }
 
     override fun onButtonClick(movie: RoomMovie) {
-        CoroutineScope(IO).launch {
+//        CoroutineScope(IO).launch {
             addData(movie)
-        }
+//        }
     }
 
     //Function to update the recycler view

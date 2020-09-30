@@ -48,7 +48,7 @@ class MyListActivity : AppCompatActivity(), ListCardAdapter.OnMovieListener, Lis
     lateinit var swipe: SwipeToDelete
     lateinit var itemTouchHelper: ItemTouchHelper
 
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+//    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_my_list)
@@ -57,9 +57,9 @@ class MyListActivity : AppCompatActivity(), ListCardAdapter.OnMovieListener, Lis
 
         database = Room.databaseBuilder(applicationContext, RoomMovieDatabase::class.java, "data.db").allowMainThreadQueries().build()
 
-        CoroutineScope(IO).launch {
+//        CoroutineScope(IO).launch {
             getList()
-        }
+//        }
 
 //        if(database.DataDAO().getData() != null){
 //            movieList = database.DataDAO().getData() as ArrayList<RoomMovie>
@@ -76,9 +76,9 @@ class MyListActivity : AppCompatActivity(), ListCardAdapter.OnMovieListener, Lis
 //        }
 
         button_clear_list.setOnClickListener {
-            CoroutineScope(IO).launch {
+//            CoroutineScope(IO).launch {
                 clearTable()
-            }
+//            }
 
 //            movieList = database.DataDAO().getData() as ArrayList<RoomMovie>
 //
@@ -123,27 +123,29 @@ class MyListActivity : AppCompatActivity(), ListCardAdapter.OnMovieListener, Lis
         }
     }
 
-    suspend fun deleteDb(movieId: Int){
+    fun deleteDb(movieId: Int){
         database.DataDAO().delete(movieId)
     }
 
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-    suspend fun getList(){
+//    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+//    suspend fun getList(){
+    fun getList(){
         if(database.DataDAO().getData() != null){
             movieList = database.DataDAO().getData() as ArrayList<RoomMovie>
 
-            withContext(Main){
+//            withContext(Main){
                 setList(movieList)
-            }
+//            }
         }
     }
 
-    suspend fun clearTable(){
+//    suspend fun clearTable(){
+    fun clearTable(){
         for (movie in movieList) database.DataDAO().delete(movie.roomMovieId)
 
-        withContext(Main){
+//        withContext(Main){
             setList(ArrayList())
-        }
+//        }
     }
 
     fun setList(inList: ArrayList<RoomMovie>){
