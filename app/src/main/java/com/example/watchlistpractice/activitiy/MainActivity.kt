@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
 import com.example.watchlistpractice.R
 import com.example.watchlistpractice.data.ApiData
+import com.example.watchlistpractice.data.Movie
 import com.example.watchlistpractice.data.RoomMovie
 import com.example.watchlistpractice.fragment.MovieDetailFragment
 import com.example.watchlistpractice.support.ListCardAdapter
@@ -42,7 +43,7 @@ class MainActivity : AppCompatActivity(), ListCardAdapter.OnMovieListener, ListC
     }
 
     //Variable to store movies
-    var movieList: ArrayList<RoomMovie> = ArrayList()
+    var movieList: ArrayList<Movie> = ArrayList()
 
     //Variables for recycler view
     lateinit var recyclerView: RecyclerView
@@ -122,7 +123,7 @@ class MainActivity : AppCompatActivity(), ListCardAdapter.OnMovieListener, ListC
     }
 
     //Function when card is clicked
-    override fun onMovieClick(movie: RoomMovie) {
+    override fun onMovieClick(movie: Movie) {
         MovieDetailFragment(movie, this).apply {
             show(supportFragmentManager, tag)
         }
@@ -165,19 +166,25 @@ class MainActivity : AppCompatActivity(), ListCardAdapter.OnMovieListener, ListC
 
             override fun onResponse(call: Call<ApiData.Response>, response: Response<ApiData.Response>) {
                 for (movies in response.body()!!.results!!){
-                    movieList.add(RoomMovie(movies.id!!,
-                                            movies.title!!,
-                                            movies.vote_average!!,
-                                            movies.release_date!!,
-                                            movies.original_language!!,
-                                            movies.overview!!))
+//                    movieList.add(RoomMovie(movies.id!!,
+//                                            movies.title!!,
+//                                            movies.vote_average!!,
+//                                            movies.release_date!!,
+//                                            movies.original_language!!,
+//                                            movies.overview!!))
+                    movieList.add(Movie(Movie.Builder() .setMovieId(movies.id!!)
+                                                        .setTitle(movies.title!!)
+                                                        .setRating(movies.vote_average!!)
+                                                        .setReleaseDate(movies.release_date!!)
+                                                        .setLanguage(movies.original_language!!)
+                                                        .setDescription(movies.overview!!)))
                 }
                 setList(movieList)
             }
         })
     }
 
-    override fun onButtonClick(movie: RoomMovie) {
+    override fun onButtonClick(movie: Movie) {
         CoroutineScope(IO).launch {
             addData(movie)
         }
@@ -193,16 +200,21 @@ class MainActivity : AppCompatActivity(), ListCardAdapter.OnMovieListener, ListC
 //    }
 
     //Function to add data to local database
-    fun addData(inMovie: RoomMovie){
+    fun addData(inMovie: Movie){
         var mChecker = true
 
         for(movie in database.DataDAO().getData()){
-            if (inMovie.roomMovieId == movie.roomMovieId) mChecker = false
+            if (inMovie.movieId == movie.roomMovieId) mChecker = false
         }
-        if (mChecker == true) database.DataDAO().insert(inMovie)
+        if (mChecker == true) database.DataDAO().insert(RoomMovie(  inMovie.movieId,
+                                                                    inMovie.title,
+                                                                    inMovie.rating,
+                                                                    inMovie.releaseDate,
+                                                                    inMovie.language,
+                                                                    inMovie.description))
     }
 
-    fun setList(inList: ArrayList<RoomMovie>){
+    fun setList(inList: ArrayList<Movie>){
         adapter = ListCardAdapter(inList, this, this)
 
         layoutManager = LinearLayoutManager(this)
@@ -210,7 +222,7 @@ class MainActivity : AppCompatActivity(), ListCardAdapter.OnMovieListener, ListC
         recyclerView.adapter = adapter
     }
 
-    override fun onSwipe(task: RoomMovie) {
+    override fun onSwipe(task: Movie) {
         TODO("Not yet implemented")
     }
 }

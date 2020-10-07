@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
 import com.example.watchlistpractice.R
 import com.example.watchlistpractice.data.ApiData
+import com.example.watchlistpractice.data.Movie
 import com.example.watchlistpractice.data.RoomMovie
 import com.example.watchlistpractice.support.ListCardAdapter
 import com.example.watchlistpractice.support.RetrofitInterface
@@ -42,7 +43,7 @@ class DiscoverMoviesActivity : AppCompatActivity(), ListCardAdapter.OnMovieListe
     }
 
     //Variable to store movies
-    var movieList: ArrayList<RoomMovie> = ArrayList()
+    var movieList: ArrayList<Movie> = ArrayList()
 
     //Variables for recycler view
     lateinit var recyclerView: RecyclerView
@@ -104,12 +105,18 @@ class DiscoverMoviesActivity : AppCompatActivity(), ListCardAdapter.OnMovieListe
 
                 override fun onResponse(call: Call<ApiData.Response>, response: Response<ApiData.Response>) {
                     for (movies in response.body()!!.results!!){
-                        movieList.add(RoomMovie(    movies.id!!,
-                                                    movies.title!!,
-                                                    movies.vote_average!!,
-                                                    movies.release_date!!,
-                                                    movies.original_language!!,
-                                                    movies.overview!!))
+//                    movieList.add(RoomMovie(movies.id!!,
+//                                            movies.title!!,
+//                                            movies.vote_average!!,
+//                                            movies.release_date!!,
+//                                            movies.original_language!!,
+//                                            movies.overview!!))
+                        movieList.add(Movie(Movie.Builder() .setMovieId(movies.id!!)
+                            .setTitle(movies.title!!)
+                            .setRating(movies.vote_average!!)
+                            .setReleaseDate(movies.release_date!!)
+                            .setLanguage(movies.original_language!!)
+                            .setDescription(movies.overview!!)))
                     }
                     refreshList()
                 }
@@ -118,7 +125,7 @@ class DiscoverMoviesActivity : AppCompatActivity(), ListCardAdapter.OnMovieListe
     }
 
     //Function when card is clicked
-    override fun onMovieClick(movie: RoomMovie) {
+    override fun onMovieClick(movie: Movie) {
         val customView: View = layoutInflater.inflate(R.layout.popup_movie, null)
         popup = PopupWindow(customView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
         popup.isOutsideTouchable = true
@@ -135,7 +142,7 @@ class DiscoverMoviesActivity : AppCompatActivity(), ListCardAdapter.OnMovieListe
 
         popupTextViewTitle.text = movie.title
         popupTextViewRating.text = popupTextViewRating.text.toString() + movie.rating!!
-        popupTextViewReleased.text = popupTextViewReleased.text.toString() + movie.release!!
+        popupTextViewReleased.text = popupTextViewReleased.text.toString() + movie.releaseDate!!
         popupTextViewLanguage.text = popupTextViewLanguage.text.toString() + movie.language!!
         popupTextViewDescription.text = popupTextViewDescription.text.toString() + "\n" + movie.description!!
 
@@ -168,16 +175,21 @@ class DiscoverMoviesActivity : AppCompatActivity(), ListCardAdapter.OnMovieListe
     }
 
     //Function to add data to local database
-    suspend fun addData(inMovie: RoomMovie){
+    suspend fun addData(inMovie: Movie){
         var mChecker = true
 
         for(movie in database.DataDAO().getData()){
-            if (inMovie.roomMovieId == movie.roomMovieId) mChecker = false
+            if (inMovie.movieId == movie.roomMovieId) mChecker = false
         }
-        if (mChecker == true) database.DataDAO().insert(inMovie)
+        if (mChecker == true) database.DataDAO().insert(RoomMovie(  inMovie.movieId,
+                                                                    inMovie.title,
+                                                                    inMovie.rating,
+                                                                    inMovie.releaseDate,
+                                                                    inMovie.language,
+                                                                    inMovie.description))
     }
 
-    override fun onSwipe(task: RoomMovie) {
+    override fun onSwipe(task: Movie) {
         TODO("Not yet implemented")
     }
 }

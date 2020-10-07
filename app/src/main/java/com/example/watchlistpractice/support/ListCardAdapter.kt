@@ -6,11 +6,12 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.watchlistpractice.R
+import com.example.watchlistpractice.data.Movie
 import com.example.watchlistpractice.data.RoomMovie
 
-class ListCardAdapter(val data: ArrayList<RoomMovie>, val onMovieListener: ListCardAdapter.OnMovieListener, val swipeListener: DeleteHelper) : RecyclerView.Adapter<ListCardAdapter.MovieViewHolder>() {
+class ListCardAdapter(val data: ArrayList<Movie>, val onMovieListener: ListCardAdapter.OnMovieListener, val swipeListener: DeleteHelper) : RecyclerView.Adapter<ListCardAdapter.MovieViewHolder>() {
     interface DeleteHelper{
-        fun onSwipe(task: RoomMovie)
+        fun onSwipe(task: Movie)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
@@ -26,7 +27,7 @@ class ListCardAdapter(val data: ArrayList<RoomMovie>, val onMovieListener: ListC
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
         holder.sTextViewTitle.text = data.get(position).title
         holder.sTextViewRating.text = "Rating of " + data.get(position).rating.toString() + "/10"
-        holder.sTextViewRelease.text = "Released on : " + data.get(position).release
+        holder.sTextViewRelease.text = "Released on : " + data.get(position).releaseDate
     }
 
     fun deleteItem(pos: Int){
@@ -37,10 +38,10 @@ class ListCardAdapter(val data: ArrayList<RoomMovie>, val onMovieListener: ListC
     }
 
     interface OnMovieListener{
-        fun onMovieClick(movie: RoomMovie)
+        fun onMovieClick(movie: Movie)
     }
 
-    class MovieViewHolder(val sData: ArrayList<RoomMovie>, itemView: View, val sOnMovieListener: ListCardAdapter.OnMovieListener) : RecyclerView.ViewHolder(itemView), View.OnClickListener{
+    class MovieViewHolder(val sData: ArrayList<Movie>, itemView: View, val sOnMovieListener: ListCardAdapter.OnMovieListener) : RecyclerView.ViewHolder(itemView), View.OnClickListener{
         val sTextViewTitle = itemView.findViewById(R.id.text_view_card_title) as TextView
         val sTextViewRating = itemView.findViewById(R.id.text_view_card_rating) as TextView
         val sTextViewRelease = itemView.findViewById(R.id.text_view_card_release) as TextView

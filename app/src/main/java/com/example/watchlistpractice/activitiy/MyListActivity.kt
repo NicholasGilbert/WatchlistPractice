@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
 import com.example.watchlistpractice.R
+import com.example.watchlistpractice.data.Movie
 import com.example.watchlistpractice.data.RoomMovie
 import com.example.watchlistpractice.support.ListCardAdapter
 import com.example.watchlistpractice.support.RoomMovieDatabase
@@ -31,7 +32,7 @@ import kotlinx.coroutines.withContext
 
 class MyListActivity : AppCompatActivity(), ListCardAdapter.OnMovieListener, ListCardAdapter.DeleteHelper {
     //Variable to store movies
-    var movieList: ArrayList<RoomMovie> = ArrayList()
+    var movieList: ArrayList<Movie> = ArrayList()
 
     //Variables for recycler view
     lateinit var recyclerView: RecyclerView
@@ -91,7 +92,7 @@ class MyListActivity : AppCompatActivity(), ListCardAdapter.OnMovieListener, Lis
         }
     }
 
-    override fun onMovieClick(movie: RoomMovie) {
+    override fun onMovieClick(movie: Movie) {
         val customView:View = layoutInflater.inflate(R.layout.popup_movie, null)
         popup = PopupWindow(customView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
         popup.isOutsideTouchable = true
@@ -110,16 +111,16 @@ class MyListActivity : AppCompatActivity(), ListCardAdapter.OnMovieListener, Lis
 
         popupTextViewTitle.text = movie.title
         popupTextViewRating.text = popupTextViewRating.text.toString() + movie.rating!!
-        popupTextViewReleased.text = popupTextViewReleased.text.toString() + movie.release!!
+        popupTextViewReleased.text = popupTextViewReleased.text.toString() + movie.releaseDate!!
         popupTextViewLanguage.text = popupTextViewLanguage.text.toString() + movie.language!!
         popupTextViewDescription.text = popupTextViewDescription.text.toString() + "\n" + movie.description!!
     }
 
-    override fun onSwipe(task: RoomMovie) {
+    override fun onSwipe(task: Movie) {
 //        database.DataDAO().delete(task.roomMovieId)
 
         CoroutineScope(IO).launch {
-            deleteDb(task.roomMovieId)
+            deleteDb(task.movieId)
         }
     }
 
@@ -130,7 +131,16 @@ class MyListActivity : AppCompatActivity(), ListCardAdapter.OnMovieListener, Lis
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     suspend fun getList(){
         if(database.DataDAO().getData() != null){
-            movieList = database.DataDAO().getData() as ArrayList<RoomMovie>
+            val dbMovieList = database.DataDAO().getData()
+
+            for(movies in dbMovieList){
+                movieList.add(Movie(Movie.Builder() .setMovieId(movies.roomMovieId!!)
+                                                    .setTitle(movies.title!!)
+                                                    .setRating(movies.rating!!)
+                                                    .setReleaseDate(movies.release!!)
+                                                    .setLanguage(movies.language!!)
+                                                    .setDescription(movies.description!!)))
+            }
 
             withContext(Main){
                 setList(movieList)
@@ -139,14 +149,14 @@ class MyListActivity : AppCompatActivity(), ListCardAdapter.OnMovieListener, Lis
     }
 
     suspend fun clearTable(){
-        for (movie in movieList) database.DataDAO().delete(movie.roomMovieId)
+        for (movie in movieList) database.DataDAO().delete(movie.movieId)
 
         withContext(Main){
             setList(ArrayList())
         }
     }
 
-    fun setList(inList: ArrayList<RoomMovie>){
+    fun setList(inList: ArrayList<Movie>){
         adapter = ListCardAdapter(inList, this, this)
         swipe = SwipeToDelete(adapter)
 
