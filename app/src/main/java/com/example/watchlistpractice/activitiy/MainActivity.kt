@@ -19,10 +19,7 @@ import com.example.watchlistpractice.data.ApiData
 import com.example.watchlistpractice.data.Movie
 import com.example.watchlistpractice.data.RoomMovie
 import com.example.watchlistpractice.fragment.MovieDetailFragment
-import com.example.watchlistpractice.support.ListCardAdapter
-import com.example.watchlistpractice.support.RetrofitInterface
-import com.example.watchlistpractice.support.RoomMovieDatabase
-import com.example.watchlistpractice.support.SwipeToDelete
+import com.example.watchlistpractice.support.*
 import kotlinx.android.synthetic.main.activity_main.relative_layout_activity_main
 import kotlinx.android.synthetic.main.activity_main.edit_text_search
 import kotlinx.android.synthetic.main.activity_main.button_search
@@ -38,9 +35,9 @@ import retrofit2.Response
 
 class MainActivity : AppCompatActivity(), ListCardAdapter.OnMovieListener, ListCardAdapter.DeleteHelper, MovieDetailFragment.OnButtonListener {
     //Variable for Retrofit
-    private val RETROFIT_INTERFACE by lazy{
-        RetrofitInterface.create()
-    }
+//    private val RETROFIT_INTERFACE by lazy{
+//        RetrofitInterface.create()
+//    }
 
     //Variable to store movies
     var movieList: ArrayList<Movie> = ArrayList()
@@ -158,7 +155,8 @@ class MainActivity : AppCompatActivity(), ListCardAdapter.OnMovieListener, ListC
 
     fun getData(inString: String){
         movieList = ArrayList()
-        val sCall: Call<ApiData.Response> = RETROFIT_INTERFACE.findMovie(inString)
+//        val sCall: Call<ApiData.Response> = RETROFIT_INTERFACE.findMovie(inString)
+        val sCall: Call<ApiData.Response> = SingletonKotlin.RETROFIT_INTERFACE.findMovie(inString)
         val sRes = sCall!!.enqueue(object: Callback<ApiData.Response> {
             override fun onFailure(call: Call<ApiData.Response>, t: Throwable) {
                 t.printStackTrace()
@@ -206,12 +204,14 @@ class MainActivity : AppCompatActivity(), ListCardAdapter.OnMovieListener, ListC
         for(movie in database.DataDAO().getData()){
             if (inMovie.movieId == movie.roomMovieId) mChecker = false
         }
-        if (mChecker == true) database.DataDAO().insert(RoomMovie(  inMovie.movieId,
+        if (mChecker == true) database.DataDAO().insert(
+            RoomMovie(  inMovie.movieId,
                                                                     inMovie.title,
                                                                     inMovie.rating,
                                                                     inMovie.releaseDate,
                                                                     inMovie.language,
-                                                                    inMovie.description))
+                                                                    inMovie.description)
+        )
     }
 
     fun setList(inList: ArrayList<Movie>){

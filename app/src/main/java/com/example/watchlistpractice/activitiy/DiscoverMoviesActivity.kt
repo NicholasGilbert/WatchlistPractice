@@ -22,6 +22,7 @@ import com.example.watchlistpractice.data.RoomMovie
 import com.example.watchlistpractice.support.ListCardAdapter
 import com.example.watchlistpractice.support.RetrofitInterface
 import com.example.watchlistpractice.support.RoomMovieDatabase
+import com.example.watchlistpractice.support.SingletonKotlin
 import kotlinx.android.synthetic.main.activity_discover_movies.button_search_genre
 import kotlinx.android.synthetic.main.activity_discover_movies.relative_layout_activity_discover_movies
 import kotlinx.coroutines.CoroutineScope
@@ -38,9 +39,9 @@ class DiscoverMoviesActivity : AppCompatActivity(), ListCardAdapter.OnMovieListe
              val OPTIONS: List<String> = listOf("Discover", "Action", "Adventure", "Animation", "Comedy")
 
     //Variable for Retrofit
-    private val RETROFIT_INTERFACE by lazy{
-        RetrofitInterface.create()
-    }
+//    private val RETROFIT_INTERFACE by lazy{
+//        RetrofitInterface.create()
+//    }
 
     //Variable to store movies
     var movieList: ArrayList<Movie> = ArrayList()
@@ -97,7 +98,8 @@ class DiscoverMoviesActivity : AppCompatActivity(), ListCardAdapter.OnMovieListe
 
             val sGenreId: Int? = getGenreId(dropdown.selectedItem.toString())
 
-            val sCall: Call<ApiData.Response> = RETROFIT_INTERFACE.discoverMovie(sGenreId)
+//            val sCall: Call<ApiData.Response> = RETROFIT_INTERFACE.discoverMovie(sGenreId)
+            val sCall: Call<ApiData.Response> = SingletonKotlin.RETROFIT_INTERFACE.discoverMovie(sGenreId)
             val sRes: Unit = sCall!!.enqueue(object : Callback<ApiData.Response> {
                 override fun onFailure(call: Call<ApiData.Response>, t: Throwable) {
                     t.printStackTrace()
