@@ -113,12 +113,13 @@ class DiscoverMoviesActivity : AppCompatActivity(), ListCardAdapter.OnMovieListe
 //                                            movies.release_date!!,
 //                                            movies.original_language!!,
 //                                            movies.overview!!))
-                        movieList.add(Movie(Movie.Builder() .setMovieId(movies.id!!)
-                            .setTitle(movies.title!!)
-                            .setRating(movies.vote_average!!)
-                            .setReleaseDate(movies.release_date!!)
-                            .setLanguage(movies.original_language!!)
-                            .setDescription(movies.overview!!)))
+                        movieList.add(Movie(Movie.Builder()
+                                                 .setMovieId(movies.id!!)
+                                                 .setTitle(movies.title!!)
+                                                 .setRating(movies.vote_average!!)
+                                                 .setReleaseDate(movies.release_date!!)
+                                                 .setLanguage(movies.original_language!!)
+                                                 .setDescription(movies.overview!!)))
                     }
                     refreshList()
                 }

@@ -20,9 +20,8 @@ import com.example.watchlistpractice.data.Movie
 import com.example.watchlistpractice.data.RoomMovie
 import com.example.watchlistpractice.fragment.MovieDetailFragment
 import com.example.watchlistpractice.support.*
-import kotlinx.android.synthetic.main.activity_main.relative_layout_activity_main
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_main.edit_text_search
-import kotlinx.android.synthetic.main.activity_main.button_search
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Dispatchers.IO
