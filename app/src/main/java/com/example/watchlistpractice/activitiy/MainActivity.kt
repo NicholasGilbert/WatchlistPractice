@@ -22,9 +22,7 @@ import com.example.watchlistpractice.support.ListCardAdapter
 import com.example.watchlistpractice.support.RetrofitInterface
 import com.example.watchlistpractice.support.RoomMovieDatabase
 import com.example.watchlistpractice.support.SwipeToDelete
-import kotlinx.android.synthetic.main.activity_main.relative_layout_activity_main
-import kotlinx.android.synthetic.main.activity_main.edit_text_search
-import kotlinx.android.synthetic.main.activity_main.button_search
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Dispatchers.IO
@@ -112,8 +110,8 @@ class MainActivity : AppCompatActivity(), ListCardAdapter.OnMovieListener, ListC
 //                })
 //            }
 
-            if (edit_text_search.text.toString() != "") {
-                val inSearch: String = edit_text_search.text.toString()
+            if (search_edit_text.text.toString() != "") {
+                val inSearch: String = search_edit_text.text.toString()
                 CoroutineScope(IO).launch {
                     getData(inSearch)
                 }
