@@ -85,7 +85,7 @@ class MainActivity : AppCompatActivity(), ListCardAdapter.OnMovieListener, ListC
 
         database = Room.databaseBuilder(applicationContext, RoomMovieDatabase::class.java, "data.db").build()
 
-        button_search.setOnClickListener {
+        button_find.setOnClickListener {
 //            movieList = ArrayList()
 //            if (edit_text_search.text.toString() != "") {
 //                val sInSearch: String = edit_text_search.text.toString()
