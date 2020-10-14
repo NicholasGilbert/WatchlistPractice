@@ -18,18 +18,21 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
 import com.example.watchlistpractice.R
 import com.example.watchlistpractice.data.RoomMovie
+import com.example.watchlistpractice.fragment.MovieDetailFragment
 import com.example.watchlistpractice.support.ListCardAdapter
 import com.example.watchlistpractice.support.RoomMovieDatabase
 import com.example.watchlistpractice.support.SwipeToDelete
 import kotlinx.android.synthetic.main.activity_my_list.relative_layout_activity_my_list
 import kotlinx.android.synthetic.main.activity_my_list.button_clear_list
+import kotlinx.android.synthetic.main.popup_movie.*
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class MyListActivity : AppCompatActivity(), ListCardAdapter.OnMovieListener, ListCardAdapter.DeleteHelper {
+class MyListActivity : AppCompatActivity(), ListCardAdapter.OnMovieListener, ListCardAdapter.DeleteHelper, MovieDetailFragment.OnButtonListener {
     //Variable to store movies
     var movieList: ArrayList<RoomMovie> = ArrayList()
 
@@ -92,27 +95,30 @@ class MyListActivity : AppCompatActivity(), ListCardAdapter.OnMovieListener, Lis
     }
 
     override fun onMovieClick(movie: RoomMovie) {
-        val customView:View = layoutInflater.inflate(R.layout.popup_movie, null)
-        popup = PopupWindow(customView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-        popup.isOutsideTouchable = true
-        popup.isFocusable = true
-        popup.setBackgroundDrawable(ColorDrawable(Color.LTGRAY))
-        popup.showAtLocation(relative_layout_activity_my_list, Gravity.CENTER, 0, 0)
-
-        val popupTextViewTitle: TextView = customView.findViewById(R.id.text_view_title) as TextView
-        val popupTextViewRating: TextView = customView.findViewById(R.id.text_view_rating) as TextView
-        val popupTextViewReleased: TextView = customView.findViewById(R.id.text_view_released) as TextView
-        val popupTextViewLanguage: TextView = customView.findViewById(R.id.text_view_language) as TextView
-        val popupTextViewDescription: TextView = customView.findViewById(R.id.text_view_description) as TextView
-        val buttonAddMovie: Button = customView.findViewById(R.id.button_add) as Button
-
-        buttonAddMovie.visibility = View.INVISIBLE
-
-        popupTextViewTitle.text = movie.title
-        popupTextViewRating.text = popupTextViewRating.text.toString() + movie.rating!!
-        popupTextViewReleased.text = popupTextViewReleased.text.toString() + movie.release!!
-        popupTextViewLanguage.text = popupTextViewLanguage.text.toString() + movie.language!!
-        popupTextViewDescription.text = popupTextViewDescription.text.toString() + "\n" + movie.description!!
+        MovieDetailFragment(movie, this, 2).apply {
+            show(supportFragmentManager, tag)
+        }
+//        val customView:View = layoutInflater.inflate(R.layout.popup_movie, null)
+//        popup = PopupWindow(customView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+//        popup.isOutsideTouchable = true
+//        popup.isFocusable = true
+//        popup.setBackgroundDrawable(ColorDrawable(Color.LTGRAY))
+//        popup.showAtLocation(relative_layout_activity_my_list, Gravity.CENTER, 0, 0)
+//
+//        val popupTextViewTitle: TextView = customView.findViewById(R.id.text_view_title) as TextView
+//        val popupTextViewRating: TextView = customView.findViewById(R.id.text_view_rating) as TextView
+//        val popupTextViewReleased: TextView = customView.findViewById(R.id.text_view_released) as TextView
+//        val popupTextViewLanguage: TextView = customView.findViewById(R.id.text_view_language) as TextView
+//        val popupTextViewDescription: TextView = customView.findViewById(R.id.text_view_description) as TextView
+//        val buttonAddMovie: Button = customView.findViewById(R.id.button_add) as Button
+//
+//        buttonAddMovie.visibility = View.INVISIBLE
+//
+//        popupTextViewTitle.text = movie.title
+//        popupTextViewRating.text = popupTextViewRating.text.toString() + movie.rating!!
+//        popupTextViewReleased.text = popupTextViewReleased.text.toString() + movie.release!!
+//        popupTextViewLanguage.text = popupTextViewLanguage.text.toString() + movie.language!!
+//        popupTextViewDescription.text = popupTextViewDescription.text.toString() + "\n" + movie.description!!
     }
 
     override fun onSwipe(task: RoomMovie) {
@@ -156,5 +162,9 @@ class MyListActivity : AppCompatActivity(), ListCardAdapter.OnMovieListener, Lis
         layoutManager = LinearLayoutManager(this)
         recyclerView.layoutManager =  layoutManager
         recyclerView.adapter = adapter
+    }
+
+    override fun onButtonClick(movie: RoomMovie) {
+
     }
 }

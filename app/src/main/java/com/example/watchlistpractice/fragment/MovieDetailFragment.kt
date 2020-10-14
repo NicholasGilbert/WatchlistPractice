@@ -10,7 +10,7 @@ import com.example.watchlistpractice.data.RoomMovie
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.android.synthetic.main.popup_movie.*
 
-class MovieDetailFragment(val movie: RoomMovie, val onButtonListener: OnButtonListener) : BottomSheetDialogFragment() {
+class MovieDetailFragment(val movie: RoomMovie, val onButtonListener: OnButtonListener, val use: Int) : BottomSheetDialogFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.popup_movie, container, false)
     }
@@ -22,6 +22,10 @@ class MovieDetailFragment(val movie: RoomMovie, val onButtonListener: OnButtonLi
         text_view_released.text = text_view_released.text.toString() + movie.release
         text_view_language.text = text_view_language.text.toString() + movie.language
         text_view_description.text = text_view_description.text.toString() + movie.description
+
+        if(use == 2){
+            button_add.visibility = View.INVISIBLE
+        }
 
         button_add.setOnClickListener {
             onButtonListener.onButtonClick(movie)

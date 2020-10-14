@@ -121,7 +121,7 @@ class MainActivity : AppCompatActivity(), ListCardAdapter.OnMovieListener, ListC
 
     //Function when card is clicked
     override fun onMovieClick(movie: RoomMovie) {
-        MovieDetailFragment(movie, this).apply {
+        MovieDetailFragment(movie, this, 1).apply {
             show(supportFragmentManager, tag)
         }
 //        val customView: View = layoutInflater.inflate(R.layout.popup_movie, null)
