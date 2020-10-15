@@ -22,6 +22,7 @@ import com.example.watchlistpractice.fragment.MovieDetailFragment
 import com.example.watchlistpractice.support.ListCardAdapter
 import com.example.watchlistpractice.support.RoomMovieDatabase
 import com.example.watchlistpractice.support.SwipeToDelete
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.activity_my_list.relative_layout_activity_my_list
 import kotlinx.android.synthetic.main.activity_my_list.button_clear_list
 import kotlinx.android.synthetic.main.popup_movie.*
@@ -79,9 +80,19 @@ class MyListActivity : AppCompatActivity(), ListCardAdapter.OnMovieListener, Lis
 //        }
 
         button_clear_list.setOnClickListener {
-            CoroutineScope(IO).launch {
-                clearTable()
-            }
+
+            MaterialAlertDialogBuilder(this)
+                .setTitle("Clear Movie List")
+                .setMessage("Are you sure you want to delete?")
+                .setNeutralButton("Cancel") { dialog, which ->
+                    // Respond to neutral button press
+                }
+                .setPositiveButton("Clear") { dialog, which ->
+                    CoroutineScope(IO).launch {
+                        clearTable()
+                    }
+                }
+                .show()
 
 //            movieList = database.DataDAO().getData() as ArrayList<RoomMovie>
 //
