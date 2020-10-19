@@ -22,8 +22,8 @@ import com.example.watchlistpractice.fragment.MovieDetailFragment
 import com.example.watchlistpractice.support.ListCardAdapter
 import com.example.watchlistpractice.support.RetrofitInterface
 import com.example.watchlistpractice.support.RoomMovieDatabase
-import kotlinx.android.synthetic.main.activity_discover_movies.button_search_genre
-import kotlinx.android.synthetic.main.activity_discover_movies.relative_layout_activity_discover_movies
+import kotlinx.android.synthetic.main.activity_discover_movies.*
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -83,6 +83,24 @@ class DiscoverMoviesActivity : AppCompatActivity(), ListCardAdapter.OnMovieListe
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_discover_movies)
+
+        bottom_nav_dis.setOnNavigationItemSelectedListener {
+            when (it.itemId) {
+                R.id.item_search -> {
+                    val sIntent = Intent(this@DiscoverMoviesActivity, MainActivity::class.java)
+                    startActivity(sIntent)
+                    true
+                } R.id.item_my_list ->{
+                val sIntent = Intent(this@DiscoverMoviesActivity, MyListActivity::class.java)
+                startActivity(sIntent)
+                true
+            } R.id.item_discover ->{
+                true
+            }
+                else -> false
+            }
+        }
+        bottom_nav_dis.selectedItemId = R.id.item_discover
 
         recyclerView = findViewById(R.id.recycler_view_discover_movie)
 

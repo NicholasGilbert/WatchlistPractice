@@ -24,12 +24,23 @@
         android:id="@+id/button_clear_list"
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:layout_above="@+id/bottom_nav_list"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
         android:layout_marginStart="0dp"
         android:layout_marginEnd="0dp"
         android:layout_marginBottom="0dp"
         android:text="Clear List" />
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        app:itemBackground="@color/colorPrimary"
+        android:id="@+id/bottom_nav_list"
+        android:layout_alignParentBottom="true"
+        app:menu="@menu/activity"
+        app:itemIconTint="@color/selector"
+        app:itemTextColor="#000000"
+        android:layout_marginBottom="0dp" />
 
 </RelativeLayout>

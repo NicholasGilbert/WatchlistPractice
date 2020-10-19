@@ -1,5 +1,6 @@
 package com.example.watchlistpractice.activitiy
 
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
@@ -23,8 +24,8 @@ import com.example.watchlistpractice.support.ListCardAdapter
 import com.example.watchlistpractice.support.RoomMovieDatabase
 import com.example.watchlistpractice.support.SwipeToDelete
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import kotlinx.android.synthetic.main.activity_my_list.relative_layout_activity_my_list
-import kotlinx.android.synthetic.main.activity_my_list.button_clear_list
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_my_list.*
 import kotlinx.android.synthetic.main.popup_movie.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -33,7 +34,7 @@ import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class MyListActivity : AppCompatActivity(), ListCardAdapter.OnMovieListener, ListCardAdapter.DeleteHelper, MovieDetailFragment.OnButtonListener {
+class MyListActivity : AppCompatActivity(), ListCardAdapter.OnMovieListener, ListCardAdapter.DeleteHelper, MovieDetailFragment.OnButtonListener{
     //Variable to store movies
     var movieList: ArrayList<RoomMovie> = ArrayList()
 
@@ -56,6 +57,24 @@ class MyListActivity : AppCompatActivity(), ListCardAdapter.OnMovieListener, Lis
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_my_list)
+
+        bottom_nav_list.setOnNavigationItemSelectedListener {
+            when (it.itemId) {
+                R.id.item_search -> {
+                    val sIntent = Intent(this@MyListActivity, MainActivity::class.java)
+                    startActivity(sIntent)
+                    true
+                } R.id.item_my_list ->{
+                    true
+                } R.id.item_discover ->{
+                    val sIntent = Intent(this@MyListActivity, DiscoverMoviesActivity::class.java)
+                    startActivity(sIntent)
+                    true
+                }
+                else -> false
+            }
+        }
+        bottom_nav_list.selectedItemId = R.id.item_my_list
 
         recyclerView = findViewById(R.id.recycler_view_my_list)
 

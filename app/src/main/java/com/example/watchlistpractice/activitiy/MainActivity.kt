@@ -81,6 +81,24 @@ class MainActivity : AppCompatActivity(), ListCardAdapter.OnMovieListener, ListC
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        bottom_nav_main.setOnNavigationItemSelectedListener {
+            when (it.itemId) {
+                R.id.item_search -> {
+                    true
+                } R.id.item_my_list ->{
+                    val sIntent = Intent(this@MainActivity, MyListActivity::class.java)
+                    startActivity(sIntent)
+                    true
+                } R.id.item_discover ->{
+                    val sIntent = Intent(this@MainActivity, DiscoverMoviesActivity::class.java)
+                    startActivity(sIntent)
+                    true
+                }
+                else -> false
+            }
+        }
+        bottom_nav_main.selectedItemId = R.id.item_search
+
         recyclerView = findViewById(R.id.recycler_view_main)
 
         database = Room.databaseBuilder(applicationContext, RoomMovieDatabase::class.java, "data.db").build()

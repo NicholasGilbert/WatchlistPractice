@@ -32,15 +32,26 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_discover_movie"
-        android:layout_width="match_parent"
-        android:layout_height="630dp"
+        android:layout_width="396dp"
+        android:layout_height="543dp"
+        android:layout_above="@+id/bottom_nav_dis"
         android:layout_below="@+id/spinner_genre"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
         android:layout_marginStart="0dp"
         android:layout_marginTop="0dp"
         android:layout_marginEnd="0dp"
         android:layout_marginBottom="0dp" />
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_nav_dis"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="0dp"
+        app:itemBackground="@color/colorPrimary"
+        app:itemIconTint="@color/selector"
+        app:itemTextColor="#000000"
+        app:menu="@menu/activity" />
 
 </RelativeLayout>

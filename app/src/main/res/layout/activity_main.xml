@@ -80,4 +80,15 @@
         android:layout_marginEnd="0dp"
         android:layout_marginBottom="0dp" />
 
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        app:itemBackground="@color/colorPrimary"
+        android:id="@+id/bottom_nav_main"
+        android:layout_alignParentBottom="true"
+        app:menu="@menu/activity"
+        app:itemIconTint="@color/selector"
+        app:itemTextColor="@android:color/white"
+        android:layout_marginBottom="0dp" />
+
 </RelativeLayout>
