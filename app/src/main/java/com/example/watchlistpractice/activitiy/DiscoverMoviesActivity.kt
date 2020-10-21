@@ -86,21 +86,18 @@ class DiscoverMoviesActivity : AppCompatActivity(), ListCardAdapter.OnMovieListe
 
         bottom_nav_dis.setOnNavigationItemSelectedListener {
             when (it.itemId) {
-                R.id.item_search -> {
+                R.id.dis_item_search -> {
                     val sIntent = Intent(this@DiscoverMoviesActivity, MainActivity::class.java)
                     startActivity(sIntent)
                     true
-                } R.id.item_my_list ->{
+                } R.id.dis_item_my_list ->{
                 val sIntent = Intent(this@DiscoverMoviesActivity, MyListActivity::class.java)
                 startActivity(sIntent)
                 true
-            } R.id.item_discover ->{
-                true
-            }
+                }
                 else -> false
             }
         }
-        bottom_nav_dis.selectedItemId = R.id.item_discover
 
         recyclerView = findViewById(R.id.recycler_view_discover_movie)
 
@@ -129,6 +126,31 @@ class DiscoverMoviesActivity : AppCompatActivity(), ListCardAdapter.OnMovieListe
                                                     movies.release_date!!,
                                                     movies.original_language!!,
                                                     movies.overview!!))
+                    }
+                    refreshList()
+                }
+            })
+        }
+
+        fab_search_dis.setOnClickListener {
+            movieList = ArrayList()
+
+            val sGenreId: Int? = getGenreId(dropdown.selectedItem.toString())
+
+            val sCall: Call<ApiData.Response> = RETROFIT_INTERFACE.discoverMovie(sGenreId)
+            val sRes: Unit = sCall!!.enqueue(object : Callback<ApiData.Response> {
+                override fun onFailure(call: Call<ApiData.Response>, t: Throwable) {
+                    t.printStackTrace()
+                }
+
+                override fun onResponse(call: Call<ApiData.Response>, response: Response<ApiData.Response>) {
+                    for (movies in response.body()!!.results!!){
+                        movieList.add(RoomMovie(    movies.id!!,
+                            movies.title!!,
+                            movies.vote_average!!,
+                            movies.release_date!!,
+                            movies.original_language!!,
+                            movies.overview!!))
                     }
                     refreshList()
                 }

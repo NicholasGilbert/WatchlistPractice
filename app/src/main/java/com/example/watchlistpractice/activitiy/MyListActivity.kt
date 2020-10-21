@@ -60,13 +60,11 @@ class MyListActivity : AppCompatActivity(), ListCardAdapter.OnMovieListener, Lis
 
         bottom_nav_list.setOnNavigationItemSelectedListener {
             when (it.itemId) {
-                R.id.item_search -> {
+                R.id.list_item_search -> {
                     val sIntent = Intent(this@MyListActivity, MainActivity::class.java)
                     startActivity(sIntent)
                     true
-                } R.id.item_my_list ->{
-                    true
-                } R.id.item_discover ->{
+                }R.id.list_item_discover ->{
                     val sIntent = Intent(this@MyListActivity, DiscoverMoviesActivity::class.java)
                     startActivity(sIntent)
                     true
@@ -74,7 +72,6 @@ class MyListActivity : AppCompatActivity(), ListCardAdapter.OnMovieListener, Lis
                 else -> false
             }
         }
-        bottom_nav_list.selectedItemId = R.id.item_my_list
 
         recyclerView = findViewById(R.id.recycler_view_my_list)
 
@@ -98,7 +95,7 @@ class MyListActivity : AppCompatActivity(), ListCardAdapter.OnMovieListener, Lis
 //            recyclerView.adapter = adapter
 //        }
 
-        button_clear_list.setOnClickListener {
+        fab_del_list.setOnClickListener {
 
             MaterialAlertDialogBuilder(this)
                 .setTitle("Clear Movie List")

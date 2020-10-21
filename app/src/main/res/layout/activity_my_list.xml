@@ -20,27 +20,78 @@
         android:layout_marginEnd="0dp"
         android:layout_marginBottom="0dp" />
 
-    <Button
-        android:id="@+id/button_clear_list"
+<!--    <Button-->
+<!--        android:id="@+id/button_clear_list"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="50dp"-->
+<!--        android:layout_above="@+id/bottom_nav_list"-->
+<!--        android:layout_alignParentStart="true"-->
+<!--        android:layout_alignParentEnd="true"-->
+<!--        android:layout_marginStart="0dp"-->
+<!--        android:layout_marginEnd="0dp"-->
+<!--        android:layout_marginBottom="0dp"-->
+<!--        android:text="Clear List" />-->
+
+<!--    <com.google.android.material.bottomnavigation.BottomNavigationView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="50dp"-->
+<!--        android:background="@color/colorPrimary"-->
+<!--        app:itemBackground="@color/colorPrimary"-->
+<!--        android:id="@+id/bottom_nav_list"-->
+<!--        android:layout_alignParentBottom="true"-->
+<!--        app:menu="@menu/list_menu"-->
+<!--        app:itemIconTint="@color/colorPrimaryDark"-->
+<!--        app:itemTextColor="@android:color/white"-->
+<!--        android:layout_marginBottom="0dp" />-->
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_above="@+id/bottom_nav_list"
+        android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
         android:layout_marginStart="0dp"
         android:layout_marginEnd="0dp"
-        android:layout_marginBottom="0dp"
-        android:text="Clear List" />
+        android:layout_marginBottom="0dp">
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        app:itemBackground="@color/colorPrimary"
-        android:id="@+id/bottom_nav_list"
-        android:layout_alignParentBottom="true"
-        app:menu="@menu/activity"
-        app:itemIconTint="@color/selector"
-        app:itemTextColor="#000000"
-        android:layout_marginBottom="0dp" />
+        <com.google.android.material.bottomappbar.BottomAppBar
+            android:id="@+id/bottom_app_dis"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="0dp"
+            android:layout_gravity="bottom"
+            android:backgroundTint="@color/colorPrimary"
+            app:fabAlignmentMode="center">
+
+            <com.google.android.material.bottomnavigation.BottomNavigationView
+                android:id="@+id/bottom_nav_list"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/transparent"
+                app:itemBackground="@drawable/transparent"
+                app:itemIconTint="@color/colorPrimaryDark"
+                app:itemTextColor="@android:color/white"
+                android:layout_gravity="center"
+                app:menu="@menu/main_menu" />
+
+        </com.google.android.material.bottomappbar.BottomAppBar>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_del_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="0dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginBottom="30dp"
+            android:backgroundTint="@color/colorPrimary"
+            android:tint="@color/colorPrimaryDark"
+            android:src="@drawable/ic_trash"
+            app:layout_anchor="@+id/bottom_app_dis"
+            app:layout_anchorGravity="top|center" />
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </RelativeLayout>

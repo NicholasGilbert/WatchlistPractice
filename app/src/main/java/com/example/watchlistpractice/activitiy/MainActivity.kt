@@ -83,13 +83,11 @@ class MainActivity : AppCompatActivity(), ListCardAdapter.OnMovieListener, ListC
 
         bottom_nav_main.setOnNavigationItemSelectedListener {
             when (it.itemId) {
-                R.id.item_search -> {
-                    true
-                } R.id.item_my_list ->{
+                R.id.main_item_my_list ->{
                     val sIntent = Intent(this@MainActivity, MyListActivity::class.java)
                     startActivity(sIntent)
                     true
-                } R.id.item_discover ->{
+                } R.id.main_item_discover ->{
                     val sIntent = Intent(this@MainActivity, DiscoverMoviesActivity::class.java)
                     startActivity(sIntent)
                     true
@@ -97,7 +95,6 @@ class MainActivity : AppCompatActivity(), ListCardAdapter.OnMovieListener, ListC
                 else -> false
             }
         }
-        bottom_nav_main.selectedItemId = R.id.item_search
 
         recyclerView = findViewById(R.id.recycler_view_main)
 
@@ -128,6 +125,15 @@ class MainActivity : AppCompatActivity(), ListCardAdapter.OnMovieListener, ListC
 //                })
 //            }
 
+            if (search_edit_text.text.toString() != "") {
+                val inSearch: String = search_edit_text.text.toString()
+                CoroutineScope(IO).launch {
+                    getData(inSearch)
+                }
+            }
+        }
+
+        fab_search_main.setOnClickListener {
             if (search_edit_text.text.toString() != "") {
                 val inSearch: String = search_edit_text.text.toString()
                 CoroutineScope(IO).launch {
