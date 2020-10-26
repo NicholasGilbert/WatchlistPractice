@@ -10,6 +10,7 @@ import android.view.*
 import android.widget.Button
 import android.widget.TextView
 import android.widget.PopupWindow
+import android.widget.Toolbar
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -81,6 +82,10 @@ class MainActivity : AppCompatActivity(), ListCardAdapter.OnMovieListener, ListC
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        window.statusBarColor = resources.getColor(R.color.colorPrimaryDark)
+
+        setSupportActionBar(findViewById(R.id.main_toolbar))
+
         bottom_nav_main.setOnNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.main_item_my_list ->{
@@ -100,8 +105,8 @@ class MainActivity : AppCompatActivity(), ListCardAdapter.OnMovieListener, ListC
 
         database = Room.databaseBuilder(applicationContext, RoomMovieDatabase::class.java, "data.db").build()
 
-        button_find.setOnClickListener {
-//            movieList = ArrayList()
+//        button_find.setOnClickListener {
+//            movieList = ArrayList(
 //            if (edit_text_search.text.toString() != "") {
 //                val sInSearch: String = edit_text_search.text.toString()
 //                val sCall: Call<ApiData.Response> = RETROFIT_INTERFACE.findMovie(sInSearch)
@@ -125,13 +130,13 @@ class MainActivity : AppCompatActivity(), ListCardAdapter.OnMovieListener, ListC
 //                })
 //            }
 
-            if (search_edit_text.text.toString() != "") {
-                val inSearch: String = search_edit_text.text.toString()
-                CoroutineScope(IO).launch {
-                    getData(inSearch)
-                }
-            }
-        }
+//            if (search_edit_text.text.toString() != "") {
+//                val inSearch: String = search_edit_text.text.toString()
+//                CoroutineScope(IO).launch {
+//                    getData(inSearch)
+//                }
+//            }
+//        }
 
         fab_search_main.setOnClickListener {
             if (search_edit_text.text.toString() != "") {

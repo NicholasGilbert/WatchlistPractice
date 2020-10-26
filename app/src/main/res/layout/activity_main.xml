@@ -1,148 +1,195 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.appcompat.widget.LinearLayoutCompat
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/relative_layout_activity_main"
-    tools:context=".activitiy.MainActivity">
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/search_text_input"
-        android:layout_width="290dp"
-        android:layout_height="wrap_content"
-        android:background="@drawable/transparent"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="5dp"
-        android:layout_marginBottom="0dp"
-        android:layout_toStartOf="@+id/button_find">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/search_edit_text"
-            android:textSize="16sp"
-            android:layout_width="match_parent"
-            android:background="@drawable/transparent"
-            android:hint="Movie Title"
-            android:layout_height="wrap_content" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-<!--    <EditText-->
-<!--        android:id="@+id/edit_text_search"-->
-<!--        android:layout_width="290dp"-->
-<!--        android:layout_height="100dp"-->
-<!--        android:layout_alignParentStart="true"-->
-<!--        android:layout_alignParentTop="true"-->
-<!--        android:layout_marginStart="0dp"-->
-<!--        android:layout_marginTop="0dp"-->
-<!--        android:layout_marginEnd="0dp"-->
-<!--        android:layout_toStartOf="@+id/button_search"-->
-<!--        android:autofillHints="Search Movie"-->
-<!--        android:gravity="start"-->
-<!--        android:inputType="textNoSuggestions"-->
-<!--        android:textSize="50sp" />-->
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/button_find"
-        style="@style/TextAppearance.AppCompat.Widget.Button.Colored"
-        android:layout_width="100dp"
-        android:layout_height="50dp"
-        android:layout_above="@+id/recycler_view_main"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="5dp"
-        app:backgroundTint="@color/colorPrimaryDark"
-        android:layout_marginBottom="0dp"
-        android:background="@drawable/circle_button"
-        android:text="Search"
-        app:cornerRadius="520dp" />
-
-<!--    <Button-->
-<!--        android:id="@+id/button_find"-->
-<!--        android:layout_width="100dp"-->
-<!--        android:layout_height="100dp"-->
-<!--        android:layout_alignParentTop="true"-->
-<!--        android:layout_alignParentEnd="true"-->
-<!--        android:layout_marginTop="0dp"-->
-<!--        android:layout_marginEnd="0dp"-->
-<!--        android:text="find" />-->
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view_main"
-        android:layout_width="match_parent"
-        android:layout_height="630dp"
-        android:layout_below="@+id/search_text_input"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="0dp"
-        android:layout_marginEnd="0dp"
-        android:layout_marginBottom="0dp" />
-
-<!--    <com.google.android.material.bottomnavigation.BottomNavigationView-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="50dp"-->
-<!--        android:background="@color/colorPrimary"-->
-<!--        app:itemBackground="@color/colorPrimary"-->
-<!--        android:id="@+id/bottom_nav_main"-->
-<!--        android:layout_alignParentBottom="true"-->
-<!--        app:menu="@menu/main_menu"-->
-<!--        app:itemIconTint="@color/colorPrimaryDark"-->
-<!--        app:itemTextColor="@android:color/white"-->
-<!--        android:layout_marginBottom="0dp" />-->
-
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="0dp"
-        android:layout_marginEnd="0dp"
-        android:layout_marginBottom="0dp">
+        app:liftOnScroll="true">
 
-        <com.google.android.material.bottomappbar.BottomAppBar
-            android:id="@+id/bottom_app_dis"
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/main_toolbar"
+            android:minHeight="?attr/actionBarSize"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="0dp"
-            android:layout_gravity="bottom"
-            android:backgroundTint="@color/colorPrimary"
-            app:fabAlignmentMode="center">
+            app:layout_scrollFlags="scroll|enterAlways|snap"
+            app:titleTextColor="@color/colorPrimaryDark"
+            style="@style/Widget.App.Toolbar"
+            android:elevation="5dp">
 
-            <com.google.android.material.bottomnavigation.BottomNavigationView
-                android:id="@+id/bottom_nav_main"
+            <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:src="@drawable/ic_action_name"
+                app:tint="@color/colorPrimaryDark"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/search_text_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:background="@drawable/transparent"
-                app:itemBackground="@drawable/transparent"
-                app:itemIconTint="@color/colorPrimaryDark"
-                app:itemTextColor="@android:color/white"
-                android:layout_gravity="center"
-                app:menu="@menu/main_menu" />
+                android:layout_toStartOf="@+id/button_find">
 
-        </com.google.android.material.bottomappbar.BottomAppBar>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/search_edit_text"
+                    android:textSize="16sp"
+                    android:layout_width="match_parent"
+                    android:background="@drawable/transparent"
+                    android:hint="Movie Title"
+                    android:layout_height="wrap_content" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab_search_main"
-            android:layout_width="wrap_content"
+        </com.google.android.material.appbar.MaterialToolbar>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/relative_layout_activity_main"
+        tools:context=".activitiy.MainActivity">
+
+<!--        <com.google.android.material.textfield.TextInputLayout-->
+<!--            android:id="@+id/search_text_input"-->
+<!--            android:layout_width="290dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:background="@drawable/transparent"-->
+<!--            android:layout_alignParentStart="true"-->
+<!--            android:layout_alignParentTop="true"-->
+<!--            android:layout_marginStart="5dp"-->
+<!--            android:layout_marginTop="5dp"-->
+<!--            android:layout_marginEnd="5dp"-->
+<!--            android:layout_marginBottom="0dp"-->
+<!--            android:layout_toStartOf="@+id/button_find">-->
+
+<!--            <com.google.android.material.textfield.TextInputEditText-->
+<!--                android:id="@+id/search_edit_text"-->
+<!--                android:textSize="16sp"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:background="@drawable/transparent"-->
+<!--                android:hint="Movie Title"-->
+<!--                android:layout_height="wrap_content" />-->
+<!--        </com.google.android.material.textfield.TextInputLayout>-->
+
+    <!--    <EditText-->
+    <!--        android:id="@+id/edit_text_search"-->
+    <!--        android:layout_width="290dp"-->
+    <!--        android:layout_height="100dp"-->
+    <!--        android:layout_alignParentStart="true"-->
+    <!--        android:layout_alignParentTop="true"-->
+    <!--        android:layout_marginStart="0dp"-->
+    <!--        android:layout_marginTop="0dp"-->
+    <!--        android:layout_marginEnd="0dp"-->
+    <!--        android:layout_toStartOf="@+id/button_search"-->
+    <!--        android:autofillHints="Search Movie"-->
+    <!--        android:gravity="start"-->
+    <!--        android:inputType="textNoSuggestions"-->
+    <!--        android:textSize="50sp" />-->
+
+<!--        <com.google.android.material.button.MaterialButton-->
+<!--            android:id="@+id/button_find"-->
+<!--            style="@style/TextAppearance.AppCompat.Widget.Button.Colored"-->
+<!--            android:layout_width="100dp"-->
+<!--            android:layout_height="50dp"-->
+<!--            android:layout_above="@+id/recycler_view_main"-->
+<!--            android:layout_alignParentTop="true"-->
+<!--            android:layout_alignParentEnd="true"-->
+<!--            android:layout_marginTop="5dp"-->
+<!--            android:layout_marginEnd="5dp"-->
+<!--            app:backgroundTint="@color/colorPrimaryDark"-->
+<!--            android:layout_marginBottom="0dp"-->
+<!--            android:background="@drawable/circle_button"-->
+<!--            android:text="Search"-->
+<!--            app:cornerRadius="520dp" />-->
+
+    <!--    <Button-->
+    <!--        android:id="@+id/button_find"-->
+    <!--        android:layout_width="100dp"-->
+    <!--        android:layout_height="100dp"-->
+    <!--        android:layout_alignParentTop="true"-->
+    <!--        android:layout_alignParentEnd="true"-->
+    <!--        android:layout_marginTop="0dp"-->
+    <!--        android:layout_marginEnd="0dp"-->
+    <!--        android:text="find" />-->
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view_main"
+            android:layout_width="match_parent"
+            android:layout_height="630dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginBottom="0dp"/>
+
+    <!--    <com.google.android.material.bottomnavigation.BottomNavigationView-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="50dp"-->
+    <!--        android:background="@color/colorPrimary"-->
+    <!--        app:itemBackground="@color/colorPrimary"-->
+    <!--        android:id="@+id/bottom_nav_main"-->
+    <!--        android:layout_alignParentBottom="true"-->
+    <!--        app:menu="@menu/main_menu"-->
+    <!--        app:itemIconTint="@color/colorPrimaryDark"-->
+    <!--        app:itemTextColor="@android:color/white"-->
+    <!--        android:layout_marginBottom="0dp" />-->
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
             android:layout_marginStart="0dp"
             android:layout_marginEnd="0dp"
-            android:layout_marginBottom="30dp"
-            app:tint="@color/colorPrimary"
-            android:backgroundTint="@color/colorPrimaryDark"
-            app:layout_anchor="@+id/bottom_app_dis"
-            app:layout_anchorGravity="top|center"
-            android:src="@drawable/ic_action_name" />
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+            android:layout_marginBottom="0dp">
 
-</RelativeLayout>
+            <com.google.android.material.bottomappbar.BottomAppBar
+                android:id="@+id/bottom_app_dis"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="0dp"
+                android:layout_gravity="bottom"
+                android:backgroundTint="@color/colorPrimary"
+                app:fabAlignmentMode="center">
+
+                <com.google.android.material.bottomnavigation.BottomNavigationView
+                    android:id="@+id/bottom_nav_main"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/transparent"
+                    app:itemBackground="@drawable/transparent"
+                    app:itemIconTint="@color/colorPrimaryDark"
+                    app:itemTextColor="@android:color/white"
+                    android:layout_gravity="center"
+                    app:menu="@menu/main_menu" />
+
+            </com.google.android.material.bottomappbar.BottomAppBar>
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab_search_main"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="0dp"
+                android:layout_marginEnd="0dp"
+                android:layout_marginBottom="30dp"
+                app:tint="@color/colorPrimary"
+                android:backgroundTint="@color/colorPrimaryDark"
+                app:layout_anchor="@+id/bottom_app_dis"
+                app:layout_anchorGravity="top|center"
+                android:src="@drawable/ic_action_name" />
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    </RelativeLayout>
+</androidx.appcompat.widget.LinearLayoutCompat>
