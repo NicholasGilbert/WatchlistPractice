@@ -10,6 +10,7 @@ import android.view.*
 import android.widget.Button
 import android.widget.TextView
 import android.widget.PopupWindow
+import androidx.recyclerview.widget.GridLayoutManager
 import android.widget.Toolbar
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -46,7 +47,7 @@ class MainActivity : AppCompatActivity(), ListCardAdapter.OnMovieListener, ListC
     //Variables for recycler view
     lateinit var recyclerView: RecyclerView
     lateinit var adapter: ListCardAdapter
-    lateinit var layoutManager: LinearLayoutManager
+    lateinit var layoutManager: RecyclerView.LayoutManager
 
     //Variable for popup
     lateinit var popup: PopupWindow
@@ -232,7 +233,7 @@ class MainActivity : AppCompatActivity(), ListCardAdapter.OnMovieListener, ListC
     fun setList(inList: ArrayList<RoomMovie>){
         adapter = ListCardAdapter(inList, this, this)
 
-        layoutManager = LinearLayoutManager(this)
+        layoutManager = GridLayoutManager(this, 2)
         recyclerView.layoutManager =  layoutManager
         recyclerView.adapter = adapter
     }
