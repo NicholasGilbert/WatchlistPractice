@@ -4,76 +4,68 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/text_view_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="0dp"
-        android:padding="5dp"
-        android:text="Movie Title"
-        android:textSize="30sp" />
-
-
-    <TextView
-        android:id="@+id/text_view_rating"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/text_view_title"
-        android:textSize="15sp"
-        android:padding="5dp"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="0dp"
-        android:text="Rating: " />
-
-    <TextView
-        android:id="@+id/text_view_released"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/text_view_rating"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="0dp"
-        android:padding="5dp"
-        android:text="Released on: "
-        android:textSize="15sp" />
-
-    <TextView
-        android:id="@+id/text_view_language"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/text_view_released"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="0dp"
-        android:padding="5dp"
-        android:text="Language: "
-        android:textSize="15sp" />
-
-    <TextView
-        android:id="@+id/text_view_description"
+    <ScrollView
+        android:id="@+id/scroll_pop"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/text_view_language"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="0dp"
-        android:padding="5dp"
-        android:text="Description" />
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    <Button
-        android:id="@+id/button_add"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/text_view_description"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="0dp"
-        android:layout_marginEnd="50dp"
-        android:text="Add to My List" />
+            <ImageView
+                android:id="@+id/image_view_poster"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="5dp" />
 
+            <TextView
+                android:id="@+id/text_view_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:text="Movie Title"
+                android:textSize="30sp" />
+
+
+            <TextView
+                android:id="@+id/text_view_rating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="0dp"
+                android:text="Rating: " />
+
+            <TextView
+                android:id="@+id/text_view_released"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:text="Released on: "
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/text_view_language"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:text="Language: "
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/text_view_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:text="Description" />
+
+            <Button
+                android:id="@+id/button_add"
+                android:padding="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Add to My List" />
+
+        </LinearLayout>
+    </ScrollView>
 </RelativeLayout>

@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import com.bumptech.glide.Glide
 import com.example.watchlistpractice.R
 import com.example.watchlistpractice.data.RoomMovie
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -31,6 +32,11 @@ class MovieDetailFragment(val movie: RoomMovie, val onButtonListener: OnButtonLi
             onButtonListener.onButtonClick(movie)
             dismiss()
         }
+
+        Glide.with(super.getContext()!!)
+            .load("https://image.tmdb.org/t/p/w500"+"/zlyhKMi2aLk25nOHnNm43MpZMtQ.jpg")
+            .onlyRetrieveFromCache(true)
+            .into(image_view_poster)
     }
 
     interface OnButtonListener{

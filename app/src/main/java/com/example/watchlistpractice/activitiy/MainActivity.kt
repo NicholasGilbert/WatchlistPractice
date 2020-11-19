@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.*
@@ -12,6 +13,7 @@ import android.widget.TextView
 import android.widget.PopupWindow
 import androidx.recyclerview.widget.GridLayoutManager
 import android.widget.Toolbar
+import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -79,6 +81,7 @@ class MainActivity : AppCompatActivity(), ListCardAdapter.OnMovieListener, ListC
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -198,7 +201,8 @@ class MainActivity : AppCompatActivity(), ListCardAdapter.OnMovieListener, ListC
                                             movies.vote_average!!,
                                             movies.release_date!!,
                                             movies.original_language!!,
-                                            movies.overview!!))
+                                            movies.overview!!,
+                                    "/zlyhKMi2aLk25nOHnNm43MpZMtQ.jpg"))
                 }
                 setList(movieList)
             }

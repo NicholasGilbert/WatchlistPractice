@@ -3,8 +3,11 @@ package com.example.watchlistpractice.support
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.watchlistpractice.R
 import com.example.watchlistpractice.data.RoomMovie
 
@@ -15,7 +18,7 @@ class ListCardAdapter(val data: ArrayList<RoomMovie>, val onMovieListener: ListC
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
         val sLayoutInflater: LayoutInflater = LayoutInflater.from(parent.context)
-        val sView: View = sLayoutInflater.inflate(R.layout.item_movie, parent, false)
+        val sView: View = sLayoutInflater.inflate(R.layout.item_card, parent, false)
         return MovieViewHolder(data, sView, onMovieListener)
     }
 
@@ -26,7 +29,12 @@ class ListCardAdapter(val data: ArrayList<RoomMovie>, val onMovieListener: ListC
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
         holder.sTextViewTitle.text = data.get(position).title
         holder.sTextViewRating.text = "Rating of " + data.get(position).rating.toString() + "/10"
-        holder.sTextViewRelease.text = "Released on : " + data.get(position).release
+
+        Glide.with(holder.itemView.context)
+            .load("https://image.tmdb.org/t/p/w500"+data.get(position).poster)
+            .fitCenter()
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
+            .into(holder.sImageViewPoster)
     }
 
     fun deleteItem(pos: Int){
@@ -41,9 +49,10 @@ class ListCardAdapter(val data: ArrayList<RoomMovie>, val onMovieListener: ListC
     }
 
     class MovieViewHolder(val sData: ArrayList<RoomMovie>, itemView: View, val sOnMovieListener: ListCardAdapter.OnMovieListener) : RecyclerView.ViewHolder(itemView), View.OnClickListener{
+
+        val sImageViewPoster = itemView.findViewById(R.id.image_view_card) as ImageView
         val sTextViewTitle = itemView.findViewById(R.id.text_view_card_title) as TextView
         val sTextViewRating = itemView.findViewById(R.id.text_view_card_rating) as TextView
-        val sTextViewRelease = itemView.findViewById(R.id.text_view_card_release) as TextView
 
         init {
             itemView.setOnClickListener(this)
