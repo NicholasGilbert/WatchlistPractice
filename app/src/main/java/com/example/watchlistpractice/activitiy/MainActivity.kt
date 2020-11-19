@@ -12,16 +12,14 @@ import android.widget.TextView
 import android.widget.PopupWindow
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
 import com.example.watchlistpractice.R
 import com.example.watchlistpractice.data.ApiData
 import com.example.watchlistpractice.data.RoomMovie
 import com.example.watchlistpractice.fragment.MovieDetailFragment
-import com.example.watchlistpractice.support.ListCardAdapter
-import com.example.watchlistpractice.support.RetrofitInterface
-import com.example.watchlistpractice.support.RoomMovieDatabase
-import com.example.watchlistpractice.support.SwipeToDelete
+import com.example.watchlistpractice.support.*
 import kotlinx.android.synthetic.main.activity_main.relative_layout_activity_main
 import kotlinx.android.synthetic.main.activity_main.edit_text_search
 import kotlinx.android.synthetic.main.activity_main.button_search
@@ -35,7 +33,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class MainActivity : AppCompatActivity(), ListCardAdapter.OnMovieListener, ListCardAdapter.DeleteHelper, MovieDetailFragment.OnButtonListener {
+class MainActivity : AppCompatActivity(), CardAdapter.OnMovieListener, CardAdapter.DeleteHelper, MovieDetailFragment.OnButtonListener {
     //Variable for Retrofit
     private val RETROFIT_INTERFACE by lazy{
         RetrofitInterface.create()
@@ -46,7 +44,7 @@ class MainActivity : AppCompatActivity(), ListCardAdapter.OnMovieListener, ListC
 
     //Variables for recycler view
     lateinit var recyclerView: RecyclerView
-    lateinit var adapter: ListCardAdapter
+    lateinit var adapter: CardAdapter
     lateinit var layoutManager: LinearLayoutManager
 
     //Variable for popup
@@ -170,7 +168,8 @@ class MainActivity : AppCompatActivity(), ListCardAdapter.OnMovieListener, ListC
                                             movies.vote_average!!,
                                             movies.release_date!!,
                                             movies.original_language!!,
-                                            movies.overview!!))
+                                            movies.overview!!,
+                                            movies.posterPath!!))
                 }
                 setList(movieList)
             }
@@ -203,9 +202,9 @@ class MainActivity : AppCompatActivity(), ListCardAdapter.OnMovieListener, ListC
     }
 
     fun setList(inList: ArrayList<RoomMovie>){
-        adapter = ListCardAdapter(inList, this, this)
+        adapter = CardAdapter(inList, this, this)
 
-        layoutManager = LinearLayoutManager(this)
+        layoutManager = GridLayoutManager(this, 2)
         recyclerView.layoutManager =  layoutManager
         recyclerView.adapter = adapter
     }

@@ -10,4 +10,5 @@ class RoomMovie (@PrimaryKey    @ColumnInfo(name = "id") var roomMovieId: Int,
                                 @ColumnInfo(name = "rating") var rating: Double,
                                 @ColumnInfo(name = "release") var release: String,
                                 @ColumnInfo(name = "language") var language: String,
-                                @ColumnInfo(name = "description") var description: String)
+                                @ColumnInfo(name = "description") var description: String,
+                                @ColumnInfo(name = "poster") var poster: String)

@@ -109,7 +109,8 @@ class DiscoverMoviesActivity : AppCompatActivity(), ListCardAdapter.OnMovieListe
                                                     movies.vote_average!!,
                                                     movies.release_date!!,
                                                     movies.original_language!!,
-                                                    movies.overview!!))
+                                                    movies.overview!!,
+                                                    movies.posterPath!!))
                     }
                     refreshList()
                 }
