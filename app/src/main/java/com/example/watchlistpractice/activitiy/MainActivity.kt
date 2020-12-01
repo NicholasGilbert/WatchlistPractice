@@ -22,10 +22,7 @@ import com.example.watchlistpractice.R
 import com.example.watchlistpractice.data.ApiData
 import com.example.watchlistpractice.data.RoomMovie
 import com.example.watchlistpractice.fragment.MovieDetailFragment
-import com.example.watchlistpractice.support.ListCardAdapter
-import com.example.watchlistpractice.support.RetrofitInterface
-import com.example.watchlistpractice.support.RoomMovieDatabase
-import com.example.watchlistpractice.support.SwipeToDelete
+import com.example.watchlistpractice.support.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -39,23 +36,26 @@ import retrofit2.Response
 
 class MainActivity : AppCompatActivity(), ListCardAdapter.OnMovieListener, ListCardAdapter.DeleteHelper, MovieDetailFragment.OnButtonListener {
     //Variable for Retrofit
-    private val RETROFIT_INTERFACE by lazy{
-        RetrofitInterface.create()
-    }
+//    private val RETROFIT_INTERFACE by lazy{
+//        RetrofitInterface.create()
+//    }
 
     //Variable to store movies
     var movieList: ArrayList<RoomMovie> = ArrayList()
 
     //Variables for recycler view
     lateinit var recyclerView: RecyclerView
-    lateinit var adapter: ListCardAdapter
-    lateinit var layoutManager: RecyclerView.LayoutManager
+//    lateinit var adapter: ListCardAdapter
+//    lateinit var layoutManager: RecyclerView.LayoutManager
 
     //Variable for popup
     lateinit var popup: PopupWindow
 
     //Variable for database
     lateinit var database: RoomMovieDatabase
+
+    //presenter
+    val presenter: MainPresenter = MainPresenter(this)
 
     //Function to show menu
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -146,7 +146,7 @@ class MainActivity : AppCompatActivity(), ListCardAdapter.OnMovieListener, ListC
             if (search_edit_text.text.toString() != "") {
                 val inSearch: String = search_edit_text.text.toString()
                 CoroutineScope(IO).launch {
-                    getData(inSearch)
+                    presenter.getData(inSearch)
                 }
             }
         }
@@ -186,28 +186,28 @@ class MainActivity : AppCompatActivity(), ListCardAdapter.OnMovieListener, ListC
 //        }
     }
 
-    fun getData(inString: String){
-        movieList = ArrayList()
-        val sCall: Call<ApiData.Response> = RETROFIT_INTERFACE.findMovie(inString)
-        val sRes = sCall!!.enqueue(object: Callback<ApiData.Response> {
-            override fun onFailure(call: Call<ApiData.Response>, t: Throwable) {
-                t.printStackTrace()
-            }
-
-            override fun onResponse(call: Call<ApiData.Response>, response: Response<ApiData.Response>) {
-                for (movies in response.body()!!.results!!){
-                    movieList.add(RoomMovie(movies.id!!,
-                                            movies.title!!,
-                                            movies.vote_average!!,
-                                            movies.release_date!!,
-                                            movies.original_language!!,
-                                            movies.overview!!,
-                                    "/zlyhKMi2aLk25nOHnNm43MpZMtQ.jpg"))
-                }
-                setList(movieList)
-            }
-        })
-    }
+//    fun getData(inString: String){
+//        movieList = ArrayList()
+//        val sCall: Call<ApiData.Response> = RETROFIT_INTERFACE.findMovie(inString)
+//        val sRes = sCall!!.enqueue(object: Callback<ApiData.Response> {
+//            override fun onFailure(call: Call<ApiData.Response>, t: Throwable) {
+//                t.printStackTrace()
+//            }
+//
+//            override fun onResponse(call: Call<ApiData.Response>, response: Response<ApiData.Response>) {
+//                for (movies in response.body()!!.results!!){
+//                    movieList.add(RoomMovie(movies.id!!,
+//                                            movies.title!!,
+//                                            movies.vote_average!!,
+//                                            movies.release_date!!,
+//                                            movies.original_language!!,
+//                                            movies.overview!!,
+//                                    "/zlyhKMi2aLk25nOHnNm43MpZMtQ.jpg"))
+//                }
+//                setList(movieList)
+//            }
+//        })
+//    }
 
     override fun onButtonClick(movie: RoomMovie) {
         CoroutineScope(IO).launch {
@@ -234,13 +234,13 @@ class MainActivity : AppCompatActivity(), ListCardAdapter.OnMovieListener, ListC
         if (mChecker == true) database.DataDAO().insert(inMovie)
     }
 
-    fun setList(inList: ArrayList<RoomMovie>){
-        adapter = ListCardAdapter(inList, this, this)
-
-        layoutManager = GridLayoutManager(this, 2)
-        recyclerView.layoutManager =  layoutManager
-        recyclerView.adapter = adapter
-    }
+//    fun setList(inList: ArrayList<RoomMovie>){
+//        adapter = ListCardAdapter(inList, this, this)
+//
+//        layoutManager = GridLayoutManager(this, 2)
+//        recyclerView.layoutManager =  layoutManager
+//        recyclerView.adapter = adapter
+//    }
 
     override fun onSwipe(task: RoomMovie) {
         TODO("Not yet implemented")
