@@ -34,27 +34,8 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class MainActivity : AppCompatActivity(), ListCardAdapter.OnMovieListener, ListCardAdapter.DeleteHelper, MovieDetailFragment.OnButtonListener {
-    //Variable for Retrofit
-//    private val RETROFIT_INTERFACE by lazy{
-//        RetrofitInterface.create()
-//    }
+class MainActivity : AppCompatActivity(), MovieDetailFragment.OnButtonListener {
 
-    //Variable to store movies
-    var movieList: ArrayList<RoomMovie> = ArrayList()
-
-    //Variables for recycler view
-    lateinit var recyclerView: RecyclerView
-//    lateinit var adapter: ListCardAdapter
-//    lateinit var layoutManager: RecyclerView.LayoutManager
-
-    //Variable for popup
-    lateinit var popup: PopupWindow
-
-    //Variable for database
-    lateinit var database: RoomMovieDatabase
-
-    //presenter
     val presenter: MainPresenter = MainPresenter(this)
 
     //Function to show menu
@@ -86,9 +67,9 @@ class MainActivity : AppCompatActivity(), ListCardAdapter.OnMovieListener, ListC
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        window.statusBarColor = resources.getColor(R.color.colorPrimaryDark)
+        presenter.setStatusColor()
 
-        setSupportActionBar(findViewById(R.id.main_toolbar))
+        presenter.setToolbar()
 
         bottom_nav_main.setOnNavigationItemSelectedListener {
             when (it.itemId) {
@@ -105,42 +86,9 @@ class MainActivity : AppCompatActivity(), ListCardAdapter.OnMovieListener, ListC
             }
         }
 
-        recyclerView = findViewById(R.id.recycler_view_main)
+        presenter.setRecycler()
 
-        database = Room.databaseBuilder(applicationContext, RoomMovieDatabase::class.java, "data.db").build()
-
-//        button_find.setOnClickListener {
-//            movieList = ArrayList(
-//            if (edit_text_search.text.toString() != "") {
-//                val sInSearch: String = edit_text_search.text.toString()
-//                val sCall: Call<ApiData.Response> = RETROFIT_INTERFACE.findMovie(sInSearch)
-//                val sRes = sCall!!.enqueue(object: Callback<ApiData.Response> {
-//                    override fun onFailure(call: Call<ApiData.Response>, t: Throwable) {
-//                        t.printStackTrace()
-//                    }
-//
-//                    override fun onResponse(call: Call<ApiData.Response>, response: Response<ApiData.Response>) {
-//                        for (movies in response.body()!!.results!!){
-//                            movieList.add(RoomMovie(    movies.id!!,
-//                                                        movies.title!!,
-//                                                        movies.vote_average!!,
-//                                                        movies.release_date!!,
-//                                                        movies.original_language!!,
-//                                                        movies.overview!!))
-//                        }
-//                        refreshList()
-//                    }
-//
-//                })
-//            }
-
-//            if (search_edit_text.text.toString() != "") {
-//                val inSearch: String = search_edit_text.text.toString()
-//                CoroutineScope(IO).launch {
-//                    getData(inSearch)
-//                }
-//            }
-//        }
+        presenter.setDatabase()
 
         fab_search_main.setOnClickListener {
             if (search_edit_text.text.toString() != "") {
@@ -152,97 +100,9 @@ class MainActivity : AppCompatActivity(), ListCardAdapter.OnMovieListener, ListC
         }
     }
 
-    //Function when card is clicked
-    override fun onMovieClick(movie: RoomMovie) {
-        MovieDetailFragment(movie, this, 1).apply {
-            show(supportFragmentManager, tag)
-        }
-//        val customView: View = layoutInflater.inflate(R.layout.popup_movie, null)
-//        popup = PopupWindow(customView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-//        popup.isOutsideTouchable = true
-//        popup.isFocusable = true
-//        popup.setBackgroundDrawable(ColorDrawable(Color.LTGRAY))
-//        popup.showAtLocation(relative_layout_activity_main, Gravity.CENTER, 0, 0)
-//
-//        val popupTextViewTitle: TextView = customView.findViewById(R.id.text_view_title) as TextView
-//        val popupTextViewRating: TextView = customView.findViewById(R.id.text_view_rating) as TextView
-//        val popupTextViewReleased: TextView = customView.findViewById(R.id.text_view_released) as TextView
-//        val popupTextViewLanguage: TextView = customView.findViewById(R.id.text_view_language) as TextView
-//        val popupTextViewDescription: TextView = customView.findViewById(R.id.text_view_description) as TextView
-//        val buttonAddMovie: Button = customView.findViewById(R.id.button_add) as Button
-//
-//        popupTextViewTitle.text = movie.title
-//        popupTextViewRating.text = popupTextViewRating.text.toString() + movie.rating!!
-//        popupTextViewReleased.text = popupTextViewReleased.text.toString() + movie.release!!
-//        popupTextViewLanguage.text = popupTextViewLanguage.text.toString() + movie.language!!
-//        popupTextViewDescription.text = popupTextViewDescription.text.toString() + "\n" + movie.description!!
-//
-//        buttonAddMovie.setOnClickListener{
-//            popup.dismiss()
-//
-//            CoroutineScope(Dispatchers.IO).launch {
-//                addData(movie)
-//            }
-//        }
-    }
-
-//    fun getData(inString: String){
-//        movieList = ArrayList()
-//        val sCall: Call<ApiData.Response> = RETROFIT_INTERFACE.findMovie(inString)
-//        val sRes = sCall!!.enqueue(object: Callback<ApiData.Response> {
-//            override fun onFailure(call: Call<ApiData.Response>, t: Throwable) {
-//                t.printStackTrace()
-//            }
-//
-//            override fun onResponse(call: Call<ApiData.Response>, response: Response<ApiData.Response>) {
-//                for (movies in response.body()!!.results!!){
-//                    movieList.add(RoomMovie(movies.id!!,
-//                                            movies.title!!,
-//                                            movies.vote_average!!,
-//                                            movies.release_date!!,
-//                                            movies.original_language!!,
-//                                            movies.overview!!,
-//                                    "/zlyhKMi2aLk25nOHnNm43MpZMtQ.jpg"))
-//                }
-//                setList(movieList)
-//            }
-//        })
-//    }
-
     override fun onButtonClick(movie: RoomMovie) {
         CoroutineScope(IO).launch {
-            addData(movie)
+            presenter.addData(movie)
         }
-    }
-
-    //Function to update the recycler view
-//    fun refreshList(){
-//        adapter = ListCardAdapter(movieList, this, this)
-//
-//        layoutManager = LinearLayoutManager(this)
-//        recyclerView.layoutManager =  layoutManager
-//        recyclerView.adapter = adapter
-//    }
-
-    //Function to add data to local database
-    fun addData(inMovie: RoomMovie){
-        var mChecker = true
-
-        for(movie in database.DataDAO().getData()){
-            if (inMovie.roomMovieId == movie.roomMovieId) mChecker = false
-        }
-        if (mChecker == true) database.DataDAO().insert(inMovie)
-    }
-
-//    fun setList(inList: ArrayList<RoomMovie>){
-//        adapter = ListCardAdapter(inList, this, this)
-//
-//        layoutManager = GridLayoutManager(this, 2)
-//        recyclerView.layoutManager =  layoutManager
-//        recyclerView.adapter = adapter
-//    }
-
-    override fun onSwipe(task: RoomMovie) {
-        TODO("Not yet implemented")
     }
 }
