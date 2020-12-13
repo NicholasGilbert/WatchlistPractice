@@ -12,9 +12,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar">
-        <activity android:name=".activitiy.DiscoverMoviesActivity"></activity>
-        <activity android:name=".activitiy.MyListActivity" />
-        <activity android:name=".activitiy.MainActivity">
+        <activity android:name=".activitiy.discover.DiscoverMoviesActivity"></activity>
+        <activity android:name=".activitiy.list.MyListActivity" />
+        <activity android:name=".activitiy.main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

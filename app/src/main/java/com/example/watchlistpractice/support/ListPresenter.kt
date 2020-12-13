@@ -1,25 +1,18 @@
 package com.example.watchlistpractice.support
 
-import android.view.View.INVISIBLE
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
 import com.example.watchlistpractice.R
-import com.example.watchlistpractice.activitiy.MyListActivity
-import com.example.watchlistpractice.data.ApiData
+import com.example.watchlistpractice.activitiy.list.MyListActivity
 import com.example.watchlistpractice.data.RoomMovie
 import com.example.watchlistpractice.fragment.MovieDetailFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import kotlinx.android.synthetic.main.popup_movie.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class ListPresenter (val act: MyListActivity): ListCardAdapter.OnMovieListener, ListCardAdapter.DeleteHelper {
 

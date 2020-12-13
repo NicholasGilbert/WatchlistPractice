@@ -1,34 +1,19 @@
-package com.example.watchlistpractice.activitiy
+package com.example.watchlistpractice.activitiy.discover
 
-import android.content.Context
 import android.content.Intent
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.*
-import android.widget.Button
-import android.widget.TextView
-import android.widget.PopupWindow
-import android.widget.ArrayAdapter
-import android.widget.Spinner
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import androidx.room.Room
 import com.example.watchlistpractice.R
-import com.example.watchlistpractice.data.ApiData
+import com.example.watchlistpractice.activitiy.main.MainActivity
+import com.example.watchlistpractice.activitiy.list.MyListActivity
 import com.example.watchlistpractice.data.RoomMovie
 import com.example.watchlistpractice.fragment.MovieDetailFragment
 import com.example.watchlistpractice.support.*
 import kotlinx.android.synthetic.main.activity_discover_movies.*
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.http.OPTIONS
 
 class DiscoverMoviesActivity : AppCompatActivity(), MovieDetailFragment.OnButtonListener {
 

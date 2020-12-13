@@ -1,42 +1,31 @@
-package com.example.watchlistpractice.activitiy
+package com.example.watchlistpractice.activitiy.main
 
-import android.content.Context
 import android.content.Intent
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.*
-import android.widget.Button
-import android.widget.TextView
-import android.widget.PopupWindow
-import androidx.recyclerview.widget.GridLayoutManager
-import android.widget.Toolbar
 import androidx.annotation.RequiresApi
-import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.room.Room
 import com.example.watchlistpractice.R
-import com.example.watchlistpractice.data.ApiData
+import com.example.watchlistpractice.activitiy.list.MyListActivity
+import com.example.watchlistpractice.activitiy.discover.DiscoverMoviesActivity
 import com.example.watchlistpractice.data.RoomMovie
 import com.example.watchlistpractice.fragment.MovieDetailFragment
-import com.example.watchlistpractice.support.*
+import com.example.watchlistpractice.support.ListCardAdapter
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
-class MainActivity : AppCompatActivity(), MovieDetailFragment.OnButtonListener {
+class MainActivity : AppCompatActivity(), MovieDetailFragment.OnButtonListener, MainContract.View {
 
-    val presenter: MainPresenter = MainPresenter(this)
+    internal lateinit var presenter: MainContract.Presenter
+
+    lateinit var recyclerView: RecyclerView
+    lateinit var adapter: ListCardAdapter
+    lateinit var layoutManager: RecyclerView.LayoutManager
 
     //Function to show menu
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -67,9 +56,9 @@ class MainActivity : AppCompatActivity(), MovieDetailFragment.OnButtonListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        presenter.setStatusColor()
+        setPresenter(MainPresenter(this))
 
-        presenter.setToolbar()
+        recyclerView = findViewById(R.id.recycler_view_main)
 
         bottom_nav_main.setOnNavigationItemSelectedListener {
             when (it.itemId) {
@@ -86,15 +75,11 @@ class MainActivity : AppCompatActivity(), MovieDetailFragment.OnButtonListener {
             }
         }
 
-        presenter.setRecycler()
-
-        presenter.setDatabase()
-
         fab_search_main.setOnClickListener {
             if (search_edit_text.text.toString() != "") {
                 val inSearch: String = search_edit_text.text.toString()
                 CoroutineScope(IO).launch {
-                    presenter.getData(inSearch)
+                    presenter.onSearch(inSearch)
                 }
             }
         }
@@ -105,4 +90,21 @@ class MainActivity : AppCompatActivity(), MovieDetailFragment.OnButtonListener {
             presenter.addData(movie)
         }
     }
-}
+
+    override fun setList(inList: ArrayList<RoomMovie>, inMovieListener: ListCardAdapter.OnMovieListener, inDelete : ListCardAdapter.DeleteHelper) {
+        adapter = ListCardAdapter(inList, inMovieListener, inDelete)
+
+        layoutManager = GridLayoutManager(this, 2)
+        recyclerView.layoutManager =  layoutManager
+        recyclerView.adapter = adapter
+    }
+
+    override fun onMovieClick(movie: RoomMovie) {
+        MovieDetailFragment(movie, this, 1).apply {
+            show(this@MainActivity.supportFragmentManager, tag)
+        }
+    }
+
+    override fun setPresenter(presenter: MainContract.Presenter) {
+        this.presenter = presenter    }
+    }
