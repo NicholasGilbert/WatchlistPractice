@@ -1,4 +1,4 @@
-package com.example.watchlistpractice.support
+package com.example.watchlistpractice.support.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -11,7 +11,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.watchlistpractice.R
 import com.example.watchlistpractice.data.RoomMovie
 
-class ListCardAdapter(val data: ArrayList<RoomMovie>, val onMovieListener: ListCardAdapter.OnMovieListener, val swipeListener: DeleteHelper) : RecyclerView.Adapter<ListCardAdapter.MovieViewHolder>() {
+class ListCardAdapter(val data: ArrayList<RoomMovie>, val onMovieListener: OnMovieListener, val swipeListener: DeleteHelper) : RecyclerView.Adapter<ListCardAdapter.MovieViewHolder>() {
     interface DeleteHelper{
         fun onSwipe(task: RoomMovie)
     }
@@ -19,7 +19,11 @@ class ListCardAdapter(val data: ArrayList<RoomMovie>, val onMovieListener: ListC
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
         val sLayoutInflater: LayoutInflater = LayoutInflater.from(parent.context)
         val sView: View = sLayoutInflater.inflate(R.layout.item_card, parent, false)
-        return MovieViewHolder(data, sView, onMovieListener)
+        return MovieViewHolder(
+            data,
+            sView,
+            onMovieListener
+        )
     }
 
     override fun getItemCount(): Int {
@@ -48,7 +52,7 @@ class ListCardAdapter(val data: ArrayList<RoomMovie>, val onMovieListener: ListC
         fun onMovieClick(movie: RoomMovie)
     }
 
-    class MovieViewHolder(val sData: ArrayList<RoomMovie>, itemView: View, val sOnMovieListener: ListCardAdapter.OnMovieListener) : RecyclerView.ViewHolder(itemView), View.OnClickListener{
+    class MovieViewHolder(val sData: ArrayList<RoomMovie>, itemView: View, val sOnMovieListener: OnMovieListener) : RecyclerView.ViewHolder(itemView), View.OnClickListener{
 
         val sImageViewPoster = itemView.findViewById(R.id.image_view_card) as ImageView
         val sTextViewTitle = itemView.findViewById(R.id.text_view_card_title) as TextView

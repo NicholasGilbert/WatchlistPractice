@@ -8,6 +8,9 @@ import com.example.watchlistpractice.activitiy.main.MainActivity
 import com.example.watchlistpractice.data.ApiData
 import com.example.watchlistpractice.data.RoomMovie
 import com.example.watchlistpractice.fragment.MovieDetailFragment
+import com.example.watchlistpractice.support.adapter.ListCardAdapter
+import com.example.watchlistpractice.support.database.RoomMovieDatabase
+import com.example.watchlistpractice.support.network.RetrofitInterface
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -64,7 +67,11 @@ class MainPresenter (val act: MainActivity): ListCardAdapter.OnMovieListener, Li
     }
 
     fun setList(inList: ArrayList<RoomMovie>){
-        adapter = ListCardAdapter(inList, this, this)
+        adapter = ListCardAdapter(
+            inList,
+            this,
+            this
+        )
 
         layoutManager = GridLayoutManager(act, 2)
         recyclerView.layoutManager =  layoutManager

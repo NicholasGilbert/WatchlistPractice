@@ -7,18 +7,18 @@ object ApiData {
                         val results: ArrayList<ResultsItem>? = null,
                         val totalResults: Int? = null)
 
-    data class ResultsItem (val overview: String? = null,
-                            val original_language: String? = null,
-                            val originalTitle: String? = null,
-                            val video: Boolean? = null,
-                            val title: String? = null,
-                            val genreIds: List<Int?>? = null,
-                            val posterPath: String? = null,
-                            val backdropPath: String? = null,
-                            val release_date: String? = null,
-                            val popularity: Double? = null,
-                            val vote_average: Double? = null,
-                            val id: Int? = null,
-                            val adult: Boolean? = null,
-                            val voteCount: Int? = null)
+    data class ResultsItem (val overview: String = "-",
+                            val original_language: String = "-",
+                            val originalTitle: String = "-",
+                            val video: Boolean = false,
+                            val title: String = "-",
+                            val genreIds: List<Int?> = listOf(0),
+                            val posterPath: String = "-",
+                            val backdropPath: String = "-",
+                            val release_date: String = "-",
+                            val popularity: Double = 0.0,
+                            val vote_average: Double = 0.0,
+                            val id: Int = 0,
+                            val adult: Boolean = false,
+                            val voteCount: Int = 0)
 }

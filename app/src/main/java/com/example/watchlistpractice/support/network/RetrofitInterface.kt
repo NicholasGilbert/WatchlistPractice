@@ -1,4 +1,4 @@
-package com.example.watchlistpractice.support
+package com.example.watchlistpractice.support.network
 
 import com.example.watchlistpractice.data.ApiData
 import okhttp3.OkHttpClient
@@ -12,7 +12,7 @@ import retrofit2.http.Query
 
 interface RetrofitInterface {
     companion object{
-        fun create(): RetrofitInterface{
+        fun create(): RetrofitInterface {
             val logging = HttpLoggingInterceptor()
             logging.level = HttpLoggingInterceptor.Level.BODY
             val okHttpClient = OkHttpClient.Builder()

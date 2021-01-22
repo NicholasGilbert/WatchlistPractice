@@ -8,12 +8,14 @@ import android.view.*
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.room.Room
 import com.example.watchlistpractice.R
 import com.example.watchlistpractice.activitiy.list.MyListActivity
 import com.example.watchlistpractice.activitiy.discover.DiscoverMoviesActivity
 import com.example.watchlistpractice.data.RoomMovie
 import com.example.watchlistpractice.fragment.MovieDetailFragment
-import com.example.watchlistpractice.support.ListCardAdapter
+import com.example.watchlistpractice.support.adapter.ListCardAdapter
+import com.example.watchlistpractice.support.database.RoomMovieDatabase
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
@@ -26,6 +28,8 @@ class MainActivity : AppCompatActivity(), MovieDetailFragment.OnButtonListener, 
     lateinit var recyclerView: RecyclerView
     lateinit var adapter: ListCardAdapter
     lateinit var layoutManager: RecyclerView.LayoutManager
+
+    lateinit var database: RoomMovieDatabase
 
     //Function to show menu
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -83,16 +87,25 @@ class MainActivity : AppCompatActivity(), MovieDetailFragment.OnButtonListener, 
                 }
             }
         }
+        setDatabase()
+    }
+
+    override fun setDatabase(){
+        database = Room.databaseBuilder(this, RoomMovieDatabase::class.java, "data.db").build()
     }
 
     override fun onButtonClick(movie: RoomMovie) {
         CoroutineScope(IO).launch {
-            presenter.addData(movie)
+            presenter.addData(movie, database)
         }
     }
 
     override fun setList(inList: ArrayList<RoomMovie>, inMovieListener: ListCardAdapter.OnMovieListener, inDelete : ListCardAdapter.DeleteHelper) {
-        adapter = ListCardAdapter(inList, inMovieListener, inDelete)
+        adapter = ListCardAdapter(
+            inList,
+            inMovieListener,
+            inDelete
+        )
 
         layoutManager = GridLayoutManager(this, 2)
         recyclerView.layoutManager =  layoutManager

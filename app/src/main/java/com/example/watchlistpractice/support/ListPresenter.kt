@@ -8,6 +8,9 @@ import com.example.watchlistpractice.R
 import com.example.watchlistpractice.activitiy.list.MyListActivity
 import com.example.watchlistpractice.data.RoomMovie
 import com.example.watchlistpractice.fragment.MovieDetailFragment
+import com.example.watchlistpractice.support.adapter.ListCardAdapter
+import com.example.watchlistpractice.support.adapter.SwipeToDelete
+import com.example.watchlistpractice.support.database.RoomMovieDatabase
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -51,9 +54,14 @@ class ListPresenter (val act: MyListActivity): ListCardAdapter.OnMovieListener, 
     }
 
     fun setList(inList: ArrayList<RoomMovie>){
-        adapter = ListCardAdapter(inList, this, this)
+        adapter = ListCardAdapter(
+            inList,
+            this,
+            this
+        )
 
-        swipe = SwipeToDelete(adapter)
+        swipe =
+            SwipeToDelete(adapter)
 
         itemTouchHelper = ItemTouchHelper(swipe)
         itemTouchHelper.attachToRecyclerView(recyclerView)
