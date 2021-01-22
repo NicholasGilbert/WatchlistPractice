@@ -11,7 +11,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.watchlistpractice.R
 import com.example.watchlistpractice.data.RoomMovie
 
-class ListCardAdapter(val data: ArrayList<RoomMovie>, val onMovieListener: OnMovieListener, val swipeListener: DeleteHelper) : RecyclerView.Adapter<ListCardAdapter.MovieViewHolder>() {
+class ListCardAdapter(val data: List<RoomMovie>, val onMovieListener: OnMovieListener, val swipeListener: DeleteHelper) : RecyclerView.Adapter<ListCardAdapter.MovieViewHolder>() {
     interface DeleteHelper{
         fun onSwipe(task: RoomMovie)
     }
@@ -42,8 +42,9 @@ class ListCardAdapter(val data: ArrayList<RoomMovie>, val onMovieListener: OnMov
     }
 
     fun deleteItem(pos: Int){
+        val mutData = data.toMutableList()
         swipeListener.onSwipe(data.get(pos))
-        data.removeAt(pos)
+        mutData.removeAt(pos)
         notifyItemRemoved(pos);
         notifyItemRangeChanged(pos, data.size);
     }
@@ -52,7 +53,7 @@ class ListCardAdapter(val data: ArrayList<RoomMovie>, val onMovieListener: OnMov
         fun onMovieClick(movie: RoomMovie)
     }
 
-    class MovieViewHolder(val sData: ArrayList<RoomMovie>, itemView: View, val sOnMovieListener: OnMovieListener) : RecyclerView.ViewHolder(itemView), View.OnClickListener{
+    class MovieViewHolder(val sData: List<RoomMovie>, itemView: View, val sOnMovieListener: OnMovieListener) : RecyclerView.ViewHolder(itemView), View.OnClickListener{
 
         val sImageViewPoster = itemView.findViewById(R.id.image_view_card) as ImageView
         val sTextViewTitle = itemView.findViewById(R.id.text_view_card_title) as TextView

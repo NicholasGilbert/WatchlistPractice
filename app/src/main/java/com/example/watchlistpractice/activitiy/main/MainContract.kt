@@ -14,7 +14,7 @@ interface MainContract {
 
     interface View :
         BaseView<Presenter> {
-        fun setList(inList: ArrayList<RoomMovie>, inMovieListener: ListCardAdapter.OnMovieListener, inDelete : ListCardAdapter.DeleteHelper)
+        fun setList(inList: List<RoomMovie>, inMovieListener: ListCardAdapter.OnMovieListener, inDelete : ListCardAdapter.DeleteHelper)
         fun onMovieClick(movie: RoomMovie)
         fun setDatabase()
     }

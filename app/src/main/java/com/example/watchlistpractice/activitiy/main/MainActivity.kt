@@ -100,7 +100,7 @@ class MainActivity : AppCompatActivity(), MovieDetailFragment.OnButtonListener, 
         }
     }
 
-    override fun setList(inList: ArrayList<RoomMovie>, inMovieListener: ListCardAdapter.OnMovieListener, inDelete : ListCardAdapter.DeleteHelper) {
+    override fun setList(inList: List<RoomMovie>, inMovieListener: ListCardAdapter.OnMovieListener, inDelete : ListCardAdapter.DeleteHelper) {
         adapter = ListCardAdapter(
             inList,
             inMovieListener,

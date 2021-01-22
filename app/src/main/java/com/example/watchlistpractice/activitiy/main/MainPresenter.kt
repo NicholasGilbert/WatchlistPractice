@@ -40,7 +40,7 @@ class MainPresenter(view: MainContract.View) : MainContract.Presenter, ListCardA
     }
 
     fun getData(inString: String){
-        val movieList: ArrayList<RoomMovie> = ArrayList()
+        val movieList: MutableList<RoomMovie> = mutableListOf()
         val sCall: Call<ApiData.Response> = retrofitInterface.findMovie(inString)
         val sRes = sCall.enqueue(object: Callback<ApiData.Response> {
             override fun onFailure(call: Call<ApiData.Response>, t: Throwable) {
