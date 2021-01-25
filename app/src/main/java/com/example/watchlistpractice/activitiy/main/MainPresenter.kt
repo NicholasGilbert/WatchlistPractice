@@ -35,6 +35,10 @@ class MainPresenter(view: MainContract.View) : MainContract.Presenter, ListCardA
         if (mChecker == true) database.DataDAO().insert(inMovie)
     }
 
+    override fun actSetList() {
+        view!!.setList(this@MainPresenter, this@MainPresenter)
+    }
+
     override fun onDestroy() {
         this.view = null
     }
@@ -61,7 +65,7 @@ class MainPresenter(view: MainContract.View) : MainContract.Presenter, ListCardA
                         }
                     }
                 }
-                view!!.setList(movieList, this@MainPresenter, this@MainPresenter)
+                view!!.updateList(movieList)
             }
         })
     }

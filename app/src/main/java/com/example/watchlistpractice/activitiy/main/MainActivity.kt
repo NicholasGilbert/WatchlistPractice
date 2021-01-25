@@ -31,6 +31,8 @@ class MainActivity : AppCompatActivity(), MovieDetailFragment.OnButtonListener, 
 
     lateinit var database: RoomMovieDatabase
 
+    var movieList: MutableList<RoomMovie> = mutableListOf()
+
     //Function to show menu
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.activity, menu)
@@ -88,6 +90,7 @@ class MainActivity : AppCompatActivity(), MovieDetailFragment.OnButtonListener, 
             }
         }
         setDatabase()
+        presenter.actSetList()
     }
 
     override fun setDatabase(){
@@ -100,12 +103,8 @@ class MainActivity : AppCompatActivity(), MovieDetailFragment.OnButtonListener, 
         }
     }
 
-    override fun setList(inList: List<RoomMovie>, inMovieListener: ListCardAdapter.OnMovieListener, inDelete : ListCardAdapter.DeleteHelper) {
-        adapter = ListCardAdapter(
-            inList,
-            inMovieListener,
-            inDelete
-        )
+    override fun setList(inMovieListener: ListCardAdapter.OnMovieListener, inDelete : ListCardAdapter.DeleteHelper) {
+        adapter = ListCardAdapter(movieList, inMovieListener, inDelete)
 
         layoutManager = GridLayoutManager(this, 2)
         recyclerView.layoutManager =  layoutManager
@@ -119,5 +118,15 @@ class MainActivity : AppCompatActivity(), MovieDetailFragment.OnButtonListener, 
     }
 
     override fun setPresenter(presenter: MainContract.Presenter) {
-        this.presenter = presenter    }
+        this.presenter = presenter
     }
+
+    override fun updateList(inMovieList: MutableList<RoomMovie>) {
+        movieList.clear()
+        for (movie in inMovieList){
+            movieList.add(movie)
+        }
+        adapter.notifyDataSetChanged()
+    }
+}
+
