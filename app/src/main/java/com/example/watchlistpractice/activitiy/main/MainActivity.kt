@@ -5,6 +5,7 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.*
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -61,10 +62,15 @@ class MainActivity : AppCompatActivity(), MovieDetailFragment.OnButtonListener, 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        setPresenter(MainPresenter(this))
-
         recyclerView = findViewById(R.id.recycler_view_main)
+
+        setDatabase()
+
+        setPresenter(MainPresenter(this, database))
+
+        presenter.actSetList()
+
+
 
         bottom_nav_main.setOnNavigationItemSelectedListener {
             when (it.itemId) {
@@ -86,11 +92,10 @@ class MainActivity : AppCompatActivity(), MovieDetailFragment.OnButtonListener, 
                 val inSearch: String = search_edit_text.text.toString()
                 CoroutineScope(IO).launch {
                     presenter.onSearch(inSearch)
+                    updateAdapter()
                 }
             }
         }
-        setDatabase()
-        presenter.actSetList()
     }
 
     override fun setDatabase(){
@@ -99,7 +104,7 @@ class MainActivity : AppCompatActivity(), MovieDetailFragment.OnButtonListener, 
 
     override fun onButtonClick(movie: RoomMovie) {
         CoroutineScope(IO).launch {
-            presenter.addData(movie, database)
+            presenter.addData(movie)
         }
     }
 
@@ -126,7 +131,15 @@ class MainActivity : AppCompatActivity(), MovieDetailFragment.OnButtonListener, 
         for (movie in inMovieList){
             movieList.add(movie)
         }
-        adapter.notifyDataSetChanged()
+
+//        updataAdapter()
+    }
+
+    fun updateAdapter(){
+        runOnUiThread {
+            Toast.makeText(applicationContext, movieList.toString(),Toast.LENGTH_SHORT).show()
+            adapter.notifyDataSetChanged()
+        }
     }
 }
 

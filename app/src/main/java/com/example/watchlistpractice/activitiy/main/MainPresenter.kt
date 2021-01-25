@@ -3,6 +3,7 @@ package com.example.watchlistpractice.activitiy.main
 import androidx.room.Room
 import com.example.watchlistpractice.data.ApiData
 import com.example.watchlistpractice.data.RoomMovie
+import com.example.watchlistpractice.data.WatchlistRepository
 import com.example.watchlistpractice.support.adapter.ListCardAdapter
 import com.example.watchlistpractice.support.network.RetrofitInterface
 import com.example.watchlistpractice.support.database.RoomMovieDatabase
@@ -10,15 +11,18 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class MainPresenter(view: MainContract.View) : MainContract.Presenter, ListCardAdapter.OnMovieListener, ListCardAdapter.DeleteHelper {
+class MainPresenter(view: MainContract.View, inDatabase: RoomMovieDatabase) : MainContract.Presenter, ListCardAdapter.OnMovieListener, ListCardAdapter.DeleteHelper {
 
     private val retrofitInterface by lazy{
         RetrofitInterface.create()
     }
 
+    val database = inDatabase
 //    lateinit var database: RoomMovieDatabase
 
     private var view: MainContract.View? = view
+
+    val repository = WatchlistRepository(database)
 
     override fun onSearch(inString: String) {
         getData(inString)
@@ -26,7 +30,7 @@ class MainPresenter(view: MainContract.View) : MainContract.Presenter, ListCardA
 
 
 
-    override fun addData(inMovie: RoomMovie, database: RoomMovieDatabase) {
+    override fun addData(inMovie: RoomMovie) {
         var mChecker = true
 
         for(movie in database.DataDAO().getData()){
@@ -44,30 +48,8 @@ class MainPresenter(view: MainContract.View) : MainContract.Presenter, ListCardA
     }
 
     fun getData(inString: String){
-        val movieList: MutableList<RoomMovie> = mutableListOf()
-        val sCall: Call<ApiData.Response> = retrofitInterface.findMovie(inString)
-        val sRes = sCall.enqueue(object: Callback<ApiData.Response> {
-            override fun onFailure(call: Call<ApiData.Response>, t: Throwable) {
-                t.printStackTrace()
-            }
-
-            override fun onResponse(call: Call<ApiData.Response>, response: Response<ApiData.Response>) {
-                if (response.body() != null) {
-                    if (response.body()!!.results != null) {
-                        for (movies in response.body()!!.results!!){
-                            movieList.add(RoomMovie(movies.id,
-                                                    movies.title,
-                                                    movies.vote_average,
-                                                    movies.release_date,
-                                                    movies.original_language,
-                                                    movies.overview,
-                                            "/zlyhKMi2aLk25nOHnNm43MpZMtQ.jpg"))
-                        }
-                    }
-                }
-                view!!.updateList(movieList)
-            }
-        })
+        val movie = repository.findMovie(inString)
+        view?.updateList(movie)
     }
 
     override fun onMovieClick(movie: RoomMovie) {

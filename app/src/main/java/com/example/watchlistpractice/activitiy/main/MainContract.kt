@@ -9,7 +9,7 @@ import com.example.watchlistpractice.support.database.RoomMovieDatabase
 interface MainContract {
     interface Presenter : BasePresenter {
         fun onSearch(inString: String)
-        fun addData(inMovie: RoomMovie, database: RoomMovieDatabase)
+        fun addData(inMovie: RoomMovie)
         fun actSetList()
     }
 
