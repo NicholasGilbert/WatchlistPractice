@@ -26,7 +26,7 @@ class WatchlistRepository(inDatabase: RoomMovieDatabase) {
 
             override fun onResponse(call: Call<ApiData.Response>, response: Response<ApiData.Response>) {
                 if (response.body() != null) {
-                    if (response.body()!!.results != null) {
+                    if (response.body()?.results != null) {
 //                        for (movies in response.body()!!.results!!){
 //                            getMovie.add(RoomMovie(movies.id,
 //                                movies.title,
@@ -36,7 +36,7 @@ class WatchlistRepository(inDatabase: RoomMovieDatabase) {
 //                                movies.overview,
 //                                "/zlyhKMi2aLk25nOHnNm43MpZMtQ.jpg"))
 //                        }
-                        val results = response.body()!!.results!!
+                        val results = response.body()?.results ?: ArrayList()
                         bypass(results)
                     }
                 }
