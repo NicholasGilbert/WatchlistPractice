@@ -15,9 +15,10 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class MainPresenter (val act: MainActivity): ListCardAdapter.OnMovieListener, ListCardAdapter.DeleteHelper{
+class MainPresenter(val act: MainActivity) : ListCardAdapter.OnMovieListener,
+    ListCardAdapter.DeleteHelper {
 
-    private val RETROFIT_INTERFACE by lazy{
+    private val RETROFIT_INTERFACE by lazy {
         RetrofitInterface.create()
     }
 
@@ -27,46 +28,55 @@ class MainPresenter (val act: MainActivity): ListCardAdapter.OnMovieListener, Li
 
     lateinit var database: RoomMovieDatabase
 
-    fun setStatusColor(){
+    fun setStatusColor() {
         act.window.statusBarColor = act.resources.getColor(R.color.colorPrimaryDark)
     }
 
-    fun setRecycler(){
+    fun setRecycler() {
         recyclerView = act.findViewById(R.id.recycler_view_main)
     }
 
-    fun setToolbar(){
+    fun setToolbar() {
         act.setSupportActionBar(act.findViewById(R.id.main_toolbar))
     }
 
-    fun setDatabase(){
-        database = Room.databaseBuilder(act.applicationContext, RoomMovieDatabase::class.java, "data.db").build()
+    fun setDatabase() {
+        database =
+            Room.databaseBuilder(act.applicationContext, RoomMovieDatabase::class.java, "data.db")
+                .build()
     }
 
-    fun getData(inString: String){
+    fun getData(inString: String) {
         val movieList: ArrayList<RoomMovie> = ArrayList()
         val sCall: Call<ApiData.Response> = RETROFIT_INTERFACE.findMovie(inString)
-        val sRes = sCall!!.enqueue(object: Callback<ApiData.Response> {
+        val sRes = sCall!!.enqueue(object : Callback<ApiData.Response> {
             override fun onFailure(call: Call<ApiData.Response>, t: Throwable) {
                 t.printStackTrace()
             }
 
-            override fun onResponse(call: Call<ApiData.Response>, response: Response<ApiData.Response>) {
-                for (movies in response.body()!!.results!!){
-                    movieList.add(RoomMovie(movies.id!!,
-                        movies.title!!,
-                        movies.vote_average!!,
-                        movies.release_date!!,
-                        movies.original_language!!,
-                        movies.overview!!,
-                        "/zlyhKMi2aLk25nOHnNm43MpZMtQ.jpg"))
+            override fun onResponse(
+                call: Call<ApiData.Response>,
+                response: Response<ApiData.Response>
+            ) {
+                for (movies in response.body()!!.results!!) {
+                    movieList.add(
+                        RoomMovie(
+                            movies.id!!,
+                            movies.title!!,
+                            movies.vote_average!!,
+                            movies.release_date!!,
+                            movies.original_language!!,
+                            movies.overview!!,
+                            "/zlyhKMi2aLk25nOHnNm43MpZMtQ.jpg"
+                        )
+                    )
                 }
                 setList(movieList)
             }
         })
     }
 
-    fun setList(inList: ArrayList<RoomMovie>){
+    fun setList(inList: ArrayList<RoomMovie>) {
         adapter = ListCardAdapter(
             inList,
             this,
@@ -74,14 +84,14 @@ class MainPresenter (val act: MainActivity): ListCardAdapter.OnMovieListener, Li
         )
 
         layoutManager = GridLayoutManager(act, 2)
-        recyclerView.layoutManager =  layoutManager
+        recyclerView.layoutManager = layoutManager
         recyclerView.adapter = adapter
     }
 
-    fun addData(inMovie: RoomMovie){
+    fun addData(inMovie: RoomMovie) {
         var mChecker = true
 
-        for(movie in database.DataDAO().getData()){
+        for (movie in database.DataDAO().getData()) {
             if (inMovie.roomMovieId == movie.roomMovieId) mChecker = false
         }
         if (mChecker == true) database.DataDAO().insert(inMovie)

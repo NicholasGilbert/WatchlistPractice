@@ -45,11 +45,13 @@ class MainActivity : AppCompatActivity(), MovieDetailFragment.OnButtonListener, 
         return when (item.itemId) {
             R.id.item_search -> {
                 return true
-            } R.id.item_my_list ->{
+            }
+            R.id.item_my_list -> {
                 val sIntent = Intent(this@MainActivity, MyListActivity::class.java)
                 startActivity(sIntent)
                 return true
-            } R.id.item_discover ->{
+            }
+            R.id.item_discover -> {
                 val sIntent = Intent(this@MainActivity, DiscoverMoviesActivity::class.java)
                 startActivity(sIntent)
                 return true
@@ -74,11 +76,12 @@ class MainActivity : AppCompatActivity(), MovieDetailFragment.OnButtonListener, 
 
         bottom_nav_main.setOnNavigationItemSelectedListener {
             when (it.itemId) {
-                R.id.main_item_my_list ->{
+                R.id.main_item_my_list -> {
                     val sIntent = Intent(this@MainActivity, MyListActivity::class.java)
                     startActivity(sIntent)
                     true
-                } R.id.main_item_discover ->{
+                }
+                R.id.main_item_discover -> {
                     val sIntent = Intent(this@MainActivity, DiscoverMoviesActivity::class.java)
                     startActivity(sIntent)
                     true
@@ -98,7 +101,7 @@ class MainActivity : AppCompatActivity(), MovieDetailFragment.OnButtonListener, 
         }
     }
 
-    override fun setDatabase(){
+    override fun setDatabase() {
         database = Room.databaseBuilder(this, RoomMovieDatabase::class.java, "data.db").build()
     }
 
@@ -108,11 +111,14 @@ class MainActivity : AppCompatActivity(), MovieDetailFragment.OnButtonListener, 
         }
     }
 
-    override fun setList(inMovieListener: ListCardAdapter.OnMovieListener, inDelete : ListCardAdapter.DeleteHelper) {
+    override fun setList(
+        inMovieListener: ListCardAdapter.OnMovieListener,
+        inDelete: ListCardAdapter.DeleteHelper
+    ) {
         adapter = ListCardAdapter(movieList, inMovieListener, inDelete)
 
         layoutManager = GridLayoutManager(this, 2)
-        recyclerView.layoutManager =  layoutManager
+        recyclerView.layoutManager = layoutManager
         recyclerView.adapter = adapter
     }
 
@@ -128,16 +134,16 @@ class MainActivity : AppCompatActivity(), MovieDetailFragment.OnButtonListener, 
 
     override fun updateList(inMovieList: MutableList<RoomMovie>) {
         movieList.clear()
-        for (movie in inMovieList){
+        for (movie in inMovieList) {
             movieList.add(movie)
         }
 
 //        updataAdapter()
     }
 
-    fun updateAdapter(){
+    fun updateAdapter() {
         runOnUiThread {
-            Toast.makeText(applicationContext, movieList.toString(),Toast.LENGTH_SHORT).show()
+            Toast.makeText(applicationContext, movieList.toString(), Toast.LENGTH_SHORT).show()
             adapter.notifyDataSetChanged()
         }
     }

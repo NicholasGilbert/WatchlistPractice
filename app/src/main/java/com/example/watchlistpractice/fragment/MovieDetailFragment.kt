@@ -11,8 +11,16 @@ import com.example.watchlistpractice.data.RoomMovie
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.android.synthetic.main.popup_movie.*
 
-class MovieDetailFragment(val movie: RoomMovie, val onButtonListener: OnButtonListener, val use: Int) : BottomSheetDialogFragment() {
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+class MovieDetailFragment(
+    val movie: RoomMovie,
+    val onButtonListener: OnButtonListener,
+    val use: Int
+) : BottomSheetDialogFragment() {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.popup_movie, container, false)
     }
 
@@ -24,7 +32,7 @@ class MovieDetailFragment(val movie: RoomMovie, val onButtonListener: OnButtonLi
         text_view_language.text = text_view_language.text.toString() + movie.language
         text_view_description.text = text_view_description.text.toString() + movie.description
 
-        if(use == 2){
+        if (use == 2) {
             button_add.visibility = View.INVISIBLE
         }
 
@@ -34,12 +42,12 @@ class MovieDetailFragment(val movie: RoomMovie, val onButtonListener: OnButtonLi
         }
 
         Glide.with(super.getContext()!!)
-            .load("https://image.tmdb.org/t/p/w500"+"/zlyhKMi2aLk25nOHnNm43MpZMtQ.jpg")
+            .load("https://image.tmdb.org/t/p/w500" + "/zlyhKMi2aLk25nOHnNm43MpZMtQ.jpg")
             .onlyRetrieveFromCache(true)
             .into(image_view_poster)
     }
 
-    interface OnButtonListener{
+    interface OnButtonListener {
         fun onButtonClick(movie: RoomMovie)
     }
 }

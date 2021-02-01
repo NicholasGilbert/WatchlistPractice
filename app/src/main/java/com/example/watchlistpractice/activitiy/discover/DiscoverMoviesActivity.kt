@@ -32,11 +32,13 @@ class DiscoverMoviesActivity : AppCompatActivity(), MovieDetailFragment.OnButton
                 val sIntent = Intent(this@DiscoverMoviesActivity, MainActivity::class.java)
                 startActivity(sIntent)
                 return true
-            } R.id.item_my_list ->{
+            }
+            R.id.item_my_list -> {
                 val sIntent = Intent(this@DiscoverMoviesActivity, MyListActivity::class.java)
                 startActivity(sIntent)
                 return true
-            } R.id.item_discover ->{
+            }
+            R.id.item_discover -> {
                 return true
             }
             else -> super.onOptionsItemSelected(item)
@@ -57,10 +59,11 @@ class DiscoverMoviesActivity : AppCompatActivity(), MovieDetailFragment.OnButton
                     val sIntent = Intent(this@DiscoverMoviesActivity, MainActivity::class.java)
                     startActivity(sIntent)
                     true
-                } R.id.dis_item_my_list ->{
-                val sIntent = Intent(this@DiscoverMoviesActivity, MyListActivity::class.java)
-                startActivity(sIntent)
-                true
+                }
+                R.id.dis_item_my_list -> {
+                    val sIntent = Intent(this@DiscoverMoviesActivity, MyListActivity::class.java)
+                    startActivity(sIntent)
+                    true
                 }
                 else -> false
             }

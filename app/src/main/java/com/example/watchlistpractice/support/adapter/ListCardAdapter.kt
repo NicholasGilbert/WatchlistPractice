@@ -11,8 +11,12 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.watchlistpractice.R
 import com.example.watchlistpractice.data.RoomMovie
 
-class ListCardAdapter(val data: List<RoomMovie>, val onMovieListener: OnMovieListener, val swipeListener: DeleteHelper) : RecyclerView.Adapter<ListCardAdapter.MovieViewHolder>() {
-    interface DeleteHelper{
+class ListCardAdapter(
+    val data: List<RoomMovie>,
+    val onMovieListener: OnMovieListener,
+    val swipeListener: DeleteHelper
+) : RecyclerView.Adapter<ListCardAdapter.MovieViewHolder>() {
+    interface DeleteHelper {
         fun onSwipe(task: RoomMovie)
     }
 
@@ -35,13 +39,13 @@ class ListCardAdapter(val data: List<RoomMovie>, val onMovieListener: OnMovieLis
         holder.sTextViewRating.text = "Rating of " + data.get(position).rating.toString() + "/10"
 
         Glide.with(holder.itemView.context)
-            .load("https://image.tmdb.org/t/p/w500"+data.get(position).poster)
+            .load("https://image.tmdb.org/t/p/w500" + data.get(position).poster)
             .fitCenter()
             .diskCacheStrategy(DiskCacheStrategy.ALL)
             .into(holder.sImageViewPoster)
     }
 
-    fun deleteItem(pos: Int){
+    fun deleteItem(pos: Int) {
         val mutData = data.toMutableList()
         swipeListener.onSwipe(data.get(pos))
         mutData.removeAt(pos)
@@ -49,11 +53,15 @@ class ListCardAdapter(val data: List<RoomMovie>, val onMovieListener: OnMovieLis
         notifyItemRangeChanged(pos, data.size);
     }
 
-    interface OnMovieListener{
+    interface OnMovieListener {
         fun onMovieClick(movie: RoomMovie)
     }
 
-    class MovieViewHolder(val sData: List<RoomMovie>, itemView: View, val sOnMovieListener: OnMovieListener) : RecyclerView.ViewHolder(itemView), View.OnClickListener{
+    class MovieViewHolder(
+        val sData: List<RoomMovie>,
+        itemView: View,
+        val sOnMovieListener: OnMovieListener
+    ) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
 
         val sImageViewPoster = itemView.findViewById(R.id.image_view_card) as ImageView
         val sTextViewTitle = itemView.findViewById(R.id.text_view_card_title) as TextView

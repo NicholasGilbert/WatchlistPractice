@@ -17,7 +17,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class ListPresenter (val act: MyListActivity): ListCardAdapter.OnMovieListener, ListCardAdapter.DeleteHelper {
+class ListPresenter(val act: MyListActivity) : ListCardAdapter.OnMovieListener,
+    ListCardAdapter.DeleteHelper {
 
     var movieList: ArrayList<RoomMovie> = ArrayList()
 
@@ -30,30 +31,32 @@ class ListPresenter (val act: MyListActivity): ListCardAdapter.OnMovieListener, 
     lateinit var swipe: SwipeToDelete
     lateinit var itemTouchHelper: ItemTouchHelper
 
-    fun setStatusColor(){
+    fun setStatusColor() {
         act.window.statusBarColor = act.resources.getColor(R.color.colorPrimaryDark)
     }
 
-    fun setRecycler(){
+    fun setRecycler() {
         recyclerView = act.findViewById(R.id.recycler_view_my_list)
     }
 
-    fun setDatabase(){
-        database = Room.databaseBuilder(act.applicationContext, RoomMovieDatabase::class.java, "data.db").build()
+    fun setDatabase() {
+        database =
+            Room.databaseBuilder(act.applicationContext, RoomMovieDatabase::class.java, "data.db")
+                .build()
     }
 
-    suspend fun getData(){
+    suspend fun getData() {
         movieList = ArrayList()
-        if(database.DataDAO().getData() != null){
+        if (database.DataDAO().getData() != null) {
             movieList = database.DataDAO().getData() as ArrayList<RoomMovie>
 
-            withContext(Dispatchers.Main){
+            withContext(Dispatchers.Main) {
                 setList(movieList)
             }
         }
     }
 
-    fun setList(inList: ArrayList<RoomMovie>){
+    fun setList(inList: ArrayList<RoomMovie>) {
         adapter = ListCardAdapter(
             inList,
             this,
@@ -67,7 +70,7 @@ class ListPresenter (val act: MyListActivity): ListCardAdapter.OnMovieListener, 
         itemTouchHelper.attachToRecyclerView(recyclerView)
 
         layoutManager = GridLayoutManager(act, 2)
-        recyclerView.layoutManager =  layoutManager
+        recyclerView.layoutManager = layoutManager
         recyclerView.adapter = adapter
     }
 
@@ -92,10 +95,10 @@ class ListPresenter (val act: MyListActivity): ListCardAdapter.OnMovieListener, 
             .show()
     }
 
-    suspend fun clearTable(){
+    suspend fun clearTable() {
         for (movie in movieList) database.DataDAO().delete(movie.roomMovieId)
 
-        withContext(Dispatchers.Main){
+        withContext(Dispatchers.Main) {
             setList(ArrayList())
         }
     }
@@ -106,7 +109,7 @@ class ListPresenter (val act: MyListActivity): ListCardAdapter.OnMovieListener, 
         }
     }
 
-    suspend fun deleteDb(movieId: Int){
+    suspend fun deleteDb(movieId: Int) {
         database.DataDAO().delete(movieId)
     }
 }

@@ -10,21 +10,24 @@ import retrofit2.Response
 
 class WatchlistRepository(inDatabase: RoomMovieDatabase) {
     val database: RoomMovieDatabase = inDatabase
-    private val retrofitInterface by lazy{
+    private val retrofitInterface by lazy {
         RetrofitInterface.create()
     }
 
     var movieList: MutableList<RoomMovie> = mutableListOf()
 
-    fun findMovie(search : String) : MutableList<RoomMovie>{
+    fun findMovie(search: String): MutableList<RoomMovie> {
         val getMovie: MutableList<RoomMovie> = mutableListOf()
         val sCall: Call<ApiData.Response> = retrofitInterface.findMovie(search)
-        val sRes = sCall.enqueue(object: Callback<ApiData.Response> {
+        val sRes = sCall.enqueue(object : Callback<ApiData.Response> {
             override fun onFailure(call: Call<ApiData.Response>, t: Throwable) {
                 t.printStackTrace()
             }
 
-            override fun onResponse(call: Call<ApiData.Response>, response: Response<ApiData.Response>) {
+            override fun onResponse(
+                call: Call<ApiData.Response>,
+                response: Response<ApiData.Response>
+            ) {
                 if (response.body() != null) {
                     if (response.body()?.results != null) {
 //                        for (movies in response.body()!!.results!!){
@@ -45,19 +48,23 @@ class WatchlistRepository(inDatabase: RoomMovieDatabase) {
         return movieList
     }
 
-    fun bypass(inMovies : ArrayList<ApiData.ResultsItem>){
+    fun bypass(inMovies: ArrayList<ApiData.ResultsItem>) {
         movieList.clear()
 //        for (movie in inMovies){
 //            movieList.add(movie)
 //        }
-        for (movies in inMovies){
-            movieList.add(RoomMovie(movies.id,
-                movies.title,
-                movies.vote_average,
-                movies.release_date,
-                movies.original_language,
-                movies.overview,
-                "/zlyhKMi2aLk25nOHnNm43MpZMtQ.jpg"))
+        for (movies in inMovies) {
+            movieList.add(
+                RoomMovie(
+                    movies.id,
+                    movies.title,
+                    movies.vote_average,
+                    movies.release_date,
+                    movies.original_language,
+                    movies.overview,
+                    "/zlyhKMi2aLk25nOHnNm43MpZMtQ.jpg"
+                )
+            )
         }
     }
 }

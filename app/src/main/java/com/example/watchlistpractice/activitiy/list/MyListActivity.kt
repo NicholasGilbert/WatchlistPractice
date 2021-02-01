@@ -16,7 +16,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 
-class MyListActivity : AppCompatActivity(), MovieDetailFragment.OnButtonListener{
+class MyListActivity : AppCompatActivity(), MovieDetailFragment.OnButtonListener {
     val presenter: ListPresenter = ListPresenter(this)
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
@@ -30,7 +30,8 @@ class MyListActivity : AppCompatActivity(), MovieDetailFragment.OnButtonListener
                     val sIntent = Intent(this@MyListActivity, MainActivity::class.java)
                     startActivity(sIntent)
                     true
-                }R.id.list_item_discover ->{
+                }
+                R.id.list_item_discover -> {
                     val sIntent = Intent(this@MyListActivity, DiscoverMoviesActivity::class.java)
                     startActivity(sIntent)
                     true

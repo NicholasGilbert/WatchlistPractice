@@ -8,7 +8,7 @@ import com.example.watchlistpractice.data.RoomMovie
 abstract class RoomMovieDatabase : RoomDatabase() {
     abstract fun DataDAO(): DataDAO
 
-    companion object{
+    companion object {
         lateinit var INSTANCE: RoomMovieDatabase
 
         operator fun invoke() =

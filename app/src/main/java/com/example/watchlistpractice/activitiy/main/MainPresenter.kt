@@ -11,9 +11,10 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class MainPresenter(view: MainContract.View, inDatabase: RoomMovieDatabase) : MainContract.Presenter, ListCardAdapter.OnMovieListener, ListCardAdapter.DeleteHelper {
+class MainPresenter(view: MainContract.View, inDatabase: RoomMovieDatabase) :
+    MainContract.Presenter, ListCardAdapter.OnMovieListener, ListCardAdapter.DeleteHelper {
 
-    private val retrofitInterface by lazy{
+    private val retrofitInterface by lazy {
         RetrofitInterface.create()
     }
 
@@ -29,11 +30,10 @@ class MainPresenter(view: MainContract.View, inDatabase: RoomMovieDatabase) : Ma
     }
 
 
-
     override fun addData(inMovie: RoomMovie) {
         var mChecker = true
 
-        for(movie in database.DataDAO().getData()){
+        for (movie in database.DataDAO().getData()) {
             if (inMovie.roomMovieId == movie.roomMovieId) mChecker = false
         }
         if (mChecker == true) database.DataDAO().insert(inMovie)
@@ -47,7 +47,7 @@ class MainPresenter(view: MainContract.View, inDatabase: RoomMovieDatabase) : Ma
         this.view = null
     }
 
-    fun getData(inString: String){
+    fun getData(inString: String) {
         val movie = repository.findMovie(inString)
         view?.updateList(movie)
     }

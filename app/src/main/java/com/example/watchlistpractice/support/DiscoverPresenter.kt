@@ -17,9 +17,10 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class DiscoverPresenter (val act: DiscoverMoviesActivity): ListCardAdapter.OnMovieListener, ListCardAdapter.DeleteHelper {
+class DiscoverPresenter(val act: DiscoverMoviesActivity) : ListCardAdapter.OnMovieListener,
+    ListCardAdapter.DeleteHelper {
 
-    private val RETROFIT_INTERFACE by lazy{
+    private val RETROFIT_INTERFACE by lazy {
         RetrofitInterface.create()
     }
 
@@ -33,25 +34,27 @@ class DiscoverPresenter (val act: DiscoverMoviesActivity): ListCardAdapter.OnMov
 
     lateinit var database: RoomMovieDatabase
 
-    fun setStatusColor(){
+    fun setStatusColor() {
         act.window.statusBarColor = act.resources.getColor(R.color.colorPrimaryDark)
     }
 
-    fun setRecycler(){
+    fun setRecycler() {
         recyclerView = act.findViewById(R.id.recycler_view_discover_movie)
     }
 
-    fun setDatabase(){
-        database = Room.databaseBuilder(act.applicationContext, RoomMovieDatabase::class.java, "data.db").build()
+    fun setDatabase() {
+        database =
+            Room.databaseBuilder(act.applicationContext, RoomMovieDatabase::class.java, "data.db")
+                .build()
     }
 
-    fun setDropdownSpinner(){
+    fun setDropdownSpinner() {
         dropdown = act.findViewById(R.id.spinner_genre)
         spinnerAdapter = ArrayAdapter(act, R.layout.item_genre, OPTIONS)
         dropdown.adapter = spinnerAdapter
     }
 
-    fun getGenreId(inGenre: String): Int?{
+    fun getGenreId(inGenre: String): Int? {
         if (inGenre == "Discover") return null
         else if (inGenre == "Action") return 28
         else if (inGenre == "Adventure") return 12
@@ -60,7 +63,7 @@ class DiscoverPresenter (val act: DiscoverMoviesActivity): ListCardAdapter.OnMov
         else return null
     }
 
-    fun getData(){
+    fun getData() {
         var movieList: ArrayList<RoomMovie> = ArrayList()
 
         val sGenreId: Int? = getGenreId(dropdown.selectedItem.toString())
@@ -71,22 +74,29 @@ class DiscoverPresenter (val act: DiscoverMoviesActivity): ListCardAdapter.OnMov
                 t.printStackTrace()
             }
 
-            override fun onResponse(call: Call<ApiData.Response>, response: Response<ApiData.Response>) {
-                for (movies in response.body()!!.results!!){
-                    movieList.add(RoomMovie(    movies.id!!,
-                        movies.title!!,
-                        movies.vote_average!!,
-                        movies.release_date!!,
-                        movies.original_language!!,
-                        movies.overview!!,
-                        "/zlyhKMi2aLk25nOHnNm43MpZMtQ.jpg"))
+            override fun onResponse(
+                call: Call<ApiData.Response>,
+                response: Response<ApiData.Response>
+            ) {
+                for (movies in response.body()!!.results!!) {
+                    movieList.add(
+                        RoomMovie(
+                            movies.id!!,
+                            movies.title!!,
+                            movies.vote_average!!,
+                            movies.release_date!!,
+                            movies.original_language!!,
+                            movies.overview!!,
+                            "/zlyhKMi2aLk25nOHnNm43MpZMtQ.jpg"
+                        )
+                    )
                 }
                 setList(movieList)
             }
         })
     }
 
-    fun setList(inList: ArrayList<RoomMovie>){
+    fun setList(inList: ArrayList<RoomMovie>) {
         adapter = ListCardAdapter(
             inList,
             this,
@@ -94,14 +104,14 @@ class DiscoverPresenter (val act: DiscoverMoviesActivity): ListCardAdapter.OnMov
         )
 
         layoutManager = GridLayoutManager(act, 2)
-        recyclerView.layoutManager =  layoutManager
+        recyclerView.layoutManager = layoutManager
         recyclerView.adapter = adapter
     }
 
-    fun addData(inMovie: RoomMovie){
+    fun addData(inMovie: RoomMovie) {
         var mChecker = true
 
-        for(movie in database.DataDAO().getData()){
+        for (movie in database.DataDAO().getData()) {
             if (inMovie.roomMovieId == movie.roomMovieId) mChecker = false
         }
         if (mChecker == true) database.DataDAO().insert(inMovie)

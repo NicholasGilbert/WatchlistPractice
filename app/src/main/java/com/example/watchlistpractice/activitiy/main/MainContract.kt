@@ -15,7 +15,11 @@ interface MainContract {
 
     interface View :
         BaseView<Presenter> {
-        fun setList(inMovieListener: ListCardAdapter.OnMovieListener, inDelete : ListCardAdapter.DeleteHelper)
+        fun setList(
+            inMovieListener: ListCardAdapter.OnMovieListener,
+            inDelete: ListCardAdapter.DeleteHelper
+        )
+
         fun onMovieClick(movie: RoomMovie)
         fun setDatabase()
         fun updateList(movieList: MutableList<RoomMovie>)
