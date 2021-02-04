@@ -33,8 +33,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/padding"
-                android:layout_marginStart="0dp"
-                android:layout_marginTop="0dp"
                 android:textSize="@dimen/smallText"
                 android:text="@string/rating" />
 
