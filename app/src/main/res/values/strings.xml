@@ -9,4 +9,7 @@
     <string name="released_on">Released on:</string>
     <string name="rating">Rating:</string>
     <string name="movie_title">Movie Title</string>
+    <string name="movie_search">Movie Search</string>
+    <string name="discover_movies">Discover Movies</string>
+    <string name="my_list">My List</string>
 </resources>
