@@ -39,7 +39,7 @@ class DiscoverPresenter(val act: DiscoverMoviesActivity) : ListCardAdapter.OnMov
     }
 
     fun setRecycler() {
-        recyclerView = act.findViewById(R.id.recycler_view_discover_movie)
+        recyclerView = act.findViewById(R.id.rv_discover_movie)
     }
 
     fun setDatabase() {
@@ -81,12 +81,12 @@ class DiscoverPresenter(val act: DiscoverMoviesActivity) : ListCardAdapter.OnMov
                 for (movies in response.body()!!.results!!) {
                     movieList.add(
                         RoomMovie(
-                            movies.id!!,
-                            movies.title!!,
-                            movies.vote_average!!,
-                            movies.release_date!!,
-                            movies.original_language!!,
-                            movies.overview!!,
+                            movies.id,
+                            movies.title,
+                            movies.voteAverage,
+                            movies.releaseDate,
+                            movies.originalLanguage,
+                            movies.overview,
                             "/zlyhKMi2aLk25nOHnNm43MpZMtQ.jpg"
                         )
                     )

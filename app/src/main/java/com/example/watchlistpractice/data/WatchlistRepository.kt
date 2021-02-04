@@ -1,7 +1,5 @@
 package com.example.watchlistpractice.data
 
-import android.widget.Toast
-import androidx.room.Room
 import com.example.watchlistpractice.support.database.RoomMovieDatabase
 import com.example.watchlistpractice.support.network.RetrofitInterface
 import retrofit2.Call
@@ -30,15 +28,6 @@ class WatchlistRepository(inDatabase: RoomMovieDatabase) {
             ) {
                 if (response.body() != null) {
                     if (response.body()?.results != null) {
-//                        for (movies in response.body()!!.results!!){
-//                            getMovie.add(RoomMovie(movies.id,
-//                                movies.title,
-//                                movies.vote_average,
-//                                movies.release_date,
-//                                movies.original_language,
-//                                movies.overview,
-//                                "/zlyhKMi2aLk25nOHnNm43MpZMtQ.jpg"))
-//                        }
                         val results = response.body()?.results ?: ArrayList()
                         bypass(results)
                     }
@@ -50,17 +39,14 @@ class WatchlistRepository(inDatabase: RoomMovieDatabase) {
 
     fun bypass(inMovies: ArrayList<ApiData.ResultsItem>) {
         movieList.clear()
-//        for (movie in inMovies){
-//            movieList.add(movie)
-//        }
         for (movies in inMovies) {
             movieList.add(
                 RoomMovie(
                     movies.id,
                     movies.title,
-                    movies.vote_average,
-                    movies.release_date,
-                    movies.original_language,
+                    movies.voteAverage,
+                    movies.releaseDate,
+                    movies.originalLanguage,
                     movies.overview,
                     "/zlyhKMi2aLk25nOHnNm43MpZMtQ.jpg"
                 )

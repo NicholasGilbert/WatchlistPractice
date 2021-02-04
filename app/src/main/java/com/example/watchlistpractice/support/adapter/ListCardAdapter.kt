@@ -63,9 +63,9 @@ class ListCardAdapter(
         val sOnMovieListener: OnMovieListener
     ) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
 
-        val sImageViewPoster = itemView.findViewById(R.id.image_view_card) as ImageView
-        val sTextViewTitle = itemView.findViewById(R.id.text_view_card_title) as TextView
-        val sTextViewRating = itemView.findViewById(R.id.text_view_card_rating) as TextView
+        val sImageViewPoster = itemView.findViewById(R.id.iv_card) as ImageView
+        val sTextViewTitle = itemView.findViewById(R.id.tv_card_title) as TextView
+        val sTextViewRating = itemView.findViewById(R.id.tv_card_rating) as TextView
 
         init {
             itemView.setOnClickListener(this)

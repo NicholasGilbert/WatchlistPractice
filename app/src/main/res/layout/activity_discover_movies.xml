@@ -9,13 +9,13 @@
 
     <Spinner
         android:id="@+id/spinner_genre"
-        android:layout_width="290dp"
-        android:layout_height="50dp"
+        android:layout_width="@dimen/spinner_width"
+        android:layout_height="@dimen/spinner_height"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="5dp"
+        android:layout_marginStart="@dimen/padding"
+        android:layout_marginTop="@dimen/padding"
+        android:layout_marginEnd="@dimen/padding"
         android:layout_toStartOf="@+id/button_search_genre"
         android:spinnerMode="dropdown" />
 
@@ -26,61 +26,32 @@
         android:layout_height="50dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="5dp"
+        android:layout_marginTop="@dimen/padding"
+        android:layout_marginEnd="@dimen/padding"
         app:backgroundTint="@color/colorPrimaryDark"
-        android:text="Search" />
+        android:text="@string/search" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view_discover_movie"
-        android:layout_width="396dp"
-        android:layout_height="543dp"
+        android:id="@+id/rv_discover_movie"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/rv_height"
         android:layout_below="@+id/spinner_genre"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="0dp"
-        android:layout_marginEnd="0dp"
-        android:layout_marginBottom="0dp" />
+        android:layout_alignParentBottom="true"/>
 
-<!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_above="@+id/bottom_nav_dis"-->
-<!--        android:layout_alignParentStart="true"-->
-<!--        android:layout_alignParentEnd="true"-->
-<!--        android:layout_marginStart="178dp"-->
-<!--        android:layout_marginEnd="177dp"-->
-<!--        android:layout_marginBottom="-18dp" />-->
-<!--    -->
-<!--    <com.google.android.material.bottomnavigation.BottomNavigationView-->
-<!--        android:id="@+id/bottom_nav_dis"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:background="@color/colorPrimary"-->
-<!--        android:layout_alignParentBottom="true"-->
-<!--        android:layout_marginBottom="0dp"-->
-<!--        app:itemBackground="@color/colorPrimary"-->
-<!--        app:itemIconTint="@color/colorPrimaryDark"-->
-<!--        app:itemTextColor="@android:color/white"-->
-<!--        app:menu="@menu/discover_menu" />-->
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="0dp"
-        android:layout_marginEnd="0dp"
-        android:layout_marginBottom="0dp">
+        android:layout_alignParentBottom="true">
 
         <com.google.android.material.bottomappbar.BottomAppBar
             android:id="@+id/bottom_app_dis"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="0dp"
             android:layout_gravity="bottom"
             android:backgroundTint="@color/colorPrimary"
             app:fabAlignmentMode="center">
@@ -105,9 +76,7 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginStart="0dp"
-            android:layout_marginEnd="0dp"
-            android:layout_marginBottom="30dp"
+            android:layout_marginBottom="@dimen/fab_bottom_padding"
             app:tint="@color/colorPrimary"
             android:backgroundTint="@color/colorPrimaryDark"
             app:layout_anchor="@+id/bottom_app_dis"

@@ -51,8 +51,6 @@ class DiscoverMoviesActivity : AppCompatActivity(), MovieDetailFragment.OnButton
 
         presenter.setStatusColor()
 
-//        presenter.setToolbar()
-
         bottom_nav_dis.setOnNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.dis_item_search -> {

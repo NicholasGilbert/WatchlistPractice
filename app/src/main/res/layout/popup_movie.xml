@@ -14,57 +14,61 @@
             android:orientation="vertical">
 
             <ImageView
-                android:id="@+id/image_view_poster"
+                android:id="@+id/iv_poster"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="5dp" />
+                android:padding="@dimen/padding" />
 
             <TextView
-                android:id="@+id/text_view_title"
+                android:id="@+id/tv_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="5dp"
-                android:text="Movie Title"
-                android:textSize="30sp" />
+                android:padding="@dimen/padding"
+                android:text="@string/movie_title"
+                android:textSize="@dimen/largeText" />
 
 
             <TextView
-                android:id="@+id/text_view_rating"
+                android:id="@+id/tv_rating"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:padding="@dimen/padding"
                 android:layout_marginStart="0dp"
                 android:layout_marginTop="0dp"
-                android:text="Rating: " />
+                android:textSize="@dimen/smallText"
+                android:text="@string/rating" />
 
             <TextView
-                android:id="@+id/text_view_released"
+                android:id="@+id/tv_released"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="5dp"
-                android:text="Released on: "
-                android:textSize="15sp" />
+                android:padding="@dimen/padding"
+                android:text="@string/released_on"
+                android:textSize="@dimen/smallText" />
 
             <TextView
-                android:id="@+id/text_view_language"
+                android:id="@+id/tv_language"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="5dp"
-                android:text="Language: "
-                android:textSize="15sp" />
+                android:padding="@dimen/padding"
+                android:text="@string/language"
+                android:textSize="@dimen/smallText"/>
 
             <TextView
-                android:id="@+id/text_view_description"
+                android:id="@+id/tv_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="5dp"
-                android:text="Description" />
+                android:padding="@dimen/padding"
+                android:textSize="@dimen/smallText"
+                android:text="@string/description" />
 
             <Button
                 android:id="@+id/button_add"
-                android:padding="5dp"
+                android:padding="@dimen/padding"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Add to My List" />
+                android:textSize="@dimen/smallText"
+                android:text="@string/add_to_my_list" />
 
         </LinearLayout>
     </ScrollView>

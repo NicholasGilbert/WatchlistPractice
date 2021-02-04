@@ -36,7 +36,7 @@ class ListPresenter(val act: MyListActivity) : ListCardAdapter.OnMovieListener,
     }
 
     fun setRecycler() {
-        recyclerView = act.findViewById(R.id.recycler_view_my_list)
+        recyclerView = act.findViewById(R.id.rv_my_list)
     }
 
     fun setDatabase() {

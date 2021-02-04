@@ -64,7 +64,7 @@ class MainActivity : AppCompatActivity(), MovieDetailFragment.OnButtonListener, 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        recyclerView = findViewById(R.id.recycler_view_main)
+        recyclerView = findViewById(R.id.rv_main)
 
         setDatabase()
 
@@ -91,8 +91,8 @@ class MainActivity : AppCompatActivity(), MovieDetailFragment.OnButtonListener, 
         }
 
         fab_search_main.setOnClickListener {
-            if (search_edit_text.text.toString() != "") {
-                val inSearch: String = search_edit_text.text.toString()
+            if (et_search.text.toString() != "") {
+                val inSearch: String = et_search.text.toString()
                 CoroutineScope(IO).launch {
                     presenter.onSearch(inSearch)
                     updateAdapter()
