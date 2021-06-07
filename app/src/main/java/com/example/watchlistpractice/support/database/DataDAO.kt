@@ -1,4 +1,4 @@
-package com.example.watchlistpractice.support
+package com.example.watchlistpractice.support.database
 
 import androidx.room.Dao
 import androidx.room.Insert

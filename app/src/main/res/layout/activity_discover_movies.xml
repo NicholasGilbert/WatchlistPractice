@@ -5,42 +5,84 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/relative_layout_activity_discover_movies"
-    tools:context=".activitiy.DiscoverMoviesActivity">
+    tools:context=".activitiy.discover.DiscoverMoviesActivity">
 
     <Spinner
         android:id="@+id/spinner_genre"
-        android:layout_width="290dp"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/spinner_width"
+        android:layout_height="@dimen/spinner_height"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="0dp"
-        android:layout_marginEnd="0dp"
+        android:layout_marginStart="@dimen/padding"
+        android:layout_marginTop="@dimen/padding"
+        android:layout_marginEnd="@dimen/padding"
         android:layout_toStartOf="@+id/button_search_genre"
-        android:background="@android:drawable/btn_dropdown"
         android:spinnerMode="dropdown" />
 
     <Button
         android:id="@+id/button_search_genre"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/TextAppearance.AppCompat.Widget.Button.Colored"
+        android:layout_height="50dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="0dp"
-        android:layout_marginEnd="0dp"
-        android:text="Search" />
+        android:layout_marginTop="@dimen/padding"
+        android:layout_marginEnd="@dimen/padding"
+        app:backgroundTint="@color/colorPrimaryDark"
+        android:text="@string/search" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view_discover_movie"
+        android:id="@+id/rv_discover_movie"
         android:layout_width="match_parent"
-        android:layout_height="630dp"
+        android:layout_height="@dimen/rv_height"
         android:layout_below="@+id/spinner_genre"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="0dp"
-        android:layout_marginEnd="0dp"
-        android:layout_marginBottom="0dp" />
+        android:layout_alignParentBottom="true"/>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true">
+
+        <com.google.android.material.bottomappbar.BottomAppBar
+            android:id="@+id/bottom_app_dis"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="bottom"
+            android:backgroundTint="@color/colorPrimary"
+            app:fabAlignmentMode="center">
+
+                <com.google.android.material.bottomnavigation.BottomNavigationView
+                    android:id="@+id/bottom_nav_dis"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/transparent"
+                    app:itemBackground="@drawable/transparent"
+                    app:itemIconTint="@color/colorPrimaryDark"
+                    app:itemTextColor="@android:color/white"
+                    android:layout_gravity="center"
+                    app:menu="@menu/discover_menu" />
+
+        </com.google.android.material.bottomappbar.BottomAppBar>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_search_dis"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="@dimen/fab_bottom_padding"
+            app:tint="@color/colorPrimary"
+            android:backgroundTint="@color/colorPrimaryDark"
+            app:layout_anchor="@+id/bottom_app_dis"
+            app:layout_anchorGravity="top|center"
+            android:src="@drawable/ic_action_name"/>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
 
 </RelativeLayout>

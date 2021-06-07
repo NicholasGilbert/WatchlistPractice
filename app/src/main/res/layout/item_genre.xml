@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="35dp"
-    android:padding="2dp"
-    android:id="@+id/text_view_genre"/>
+    android:layout_height="wrap_content"
+    android:textSize="@dimen/smallText"
+    android:gravity="center_vertical"
+    android:padding="@dimen/padding"
+    android:id="@+id/tv_genre"/>

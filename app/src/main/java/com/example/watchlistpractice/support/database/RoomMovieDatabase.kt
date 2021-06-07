@@ -1,4 +1,4 @@
-package com.example.watchlistpractice.support
+package com.example.watchlistpractice.support.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
@@ -8,9 +8,10 @@ import com.example.watchlistpractice.data.RoomMovie
 abstract class RoomMovieDatabase : RoomDatabase() {
     abstract fun DataDAO(): DataDAO
 
-    companion object{
+    companion object {
         lateinit var INSTANCE: RoomMovieDatabase
 
-        operator fun invoke() = INSTANCE
+        operator fun invoke() =
+            INSTANCE
     }
 }
